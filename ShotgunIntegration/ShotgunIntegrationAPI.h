@@ -5,6 +5,7 @@
 \**********************************************************/
 
 #include <string>
+#include <vector>
 #include <sstream>
 #include <boost/weak_ptr.hpp>
 #include "JSAPIAuto.h"
@@ -31,19 +32,11 @@ public:
     ShotgunIntegrationAPI(const ShotgunIntegrationPtr& plugin, const FB::BrowserHostPtr& host) :
         m_plugin(plugin), m_host(host)
     {
-        registerMethod("echo",      make_method(this, &ShotgunIntegrationAPI::echo));
-        registerMethod("testEvent", make_method(this, &ShotgunIntegrationAPI::testEvent));
-        
-        // Read-write property
-        registerProperty("testString",
-                         make_property(this,
-                                       &ShotgunIntegrationAPI::get_testString,
-                                       &ShotgunIntegrationAPI::set_testString));
+        registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
+        registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
         
         // Read-only property
-        registerProperty("version",
-                         make_property(this,
-                                       &ShotgunIntegrationAPI::get_version));
+        registerProperty("version", make_property(this, &ShotgunIntegrationAPI::get_version));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -57,28 +50,17 @@ public:
 
     ShotgunIntegrationPtr getPlugin();
 
-    // Read/Write property ${PROPERTY.ident}
-    std::string get_testString();
-    void set_testString(const std::string& val);
-
     // Read-only property ${PROPERTY.ident}
     std::string get_version();
-
-    // Method echo
-    FB::variant echo(const FB::variant& msg);
     
-    // Event helpers
-    FB_JSAPI_EVENT(test, 0, ());
-    FB_JSAPI_EVENT(echo, 2, (const FB::variant&, const int));
-
-    // Method test-event
-    void testEvent();
+    void open(const std::string& path);
+    void pickFileOrDirectory(FB::JSObjectPtr callback);
 
 private:
     ShotgunIntegrationWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
-
-    std::string m_testString;
+    
+    void fileSelectCallback(const FB::VariantList& paths, FB::JSObjectPtr callback);
 };
 
 #endif // H_ShotgunIntegrationAPI

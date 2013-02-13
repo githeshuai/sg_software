@@ -10,20 +10,26 @@
 #include "global/config.h"
 
 #include "ShotgunIntegrationAPI.h"
-
-///////////////////////////////////////////////////////////////////////////////
-/// @fn FB::variant ShotgunIntegrationAPI::echo(const FB::variant& msg)
-///
-/// @brief  Echos whatever is passed from Javascript.
-///         Go ahead and change it. See what happens!
-///////////////////////////////////////////////////////////////////////////////
-FB::variant ShotgunIntegrationAPI::echo(const FB::variant& msg)
+#include "DialogManager.h"
+      
+void ShotgunIntegrationAPI::open(const std::string& path)
 {
-    static int n(0);
-    fire_echo("So far, you clicked this many times: ", n++);
+    char cmd[4096] = "open ";
+    strcat(cmd, path.c_str());
+    
+    system(cmd);
+}
 
-    // return "foobar";
-    return msg;
+void ShotgunIntegrationAPI::pickFileOrDirectory(FB::JSObjectPtr callback)
+{
+    DialogManager* dlgMgr = DialogManager::get();
+    ShotgunIntegrationPtr plugin = m_plugin.lock();
+    dlgMgr->OpenFolderDialog(m_host, plugin->GetWindow(), boost::bind(&ShotgunIntegrationAPI::fileSelectCallback, this, _1, callback));
+}
+
+void ShotgunIntegrationAPI::fileSelectCallback(const FB::VariantList &paths, FB::JSObjectPtr callback)
+{
+    callback->Invoke("", FB::variant_list_of(paths));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,24 +49,8 @@ ShotgunIntegrationPtr ShotgunIntegrationAPI::getPlugin()
     return plugin;
 }
 
-// Read/Write property testString
-std::string ShotgunIntegrationAPI::get_testString()
-{
-    return m_testString;
-}
-
-void ShotgunIntegrationAPI::set_testString(const std::string& val)
-{
-    m_testString = val;
-}
-
 // Read-only property version
 std::string ShotgunIntegrationAPI::get_version()
 {
     return FBSTRING_PLUGIN_VERSION;
-}
-
-void ShotgunIntegrationAPI::testEvent()
-{
-    fire_test();
 }
