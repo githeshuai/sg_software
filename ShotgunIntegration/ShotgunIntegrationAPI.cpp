@@ -24,7 +24,14 @@ void ShotgunIntegrationAPI::pickFileOrDirectory(FB::JSObjectPtr callback)
 {
     DialogManager* dlgMgr = DialogManager::get();
     ShotgunIntegrationPtr plugin = m_plugin.lock();
-    dlgMgr->OpenFolderDialog(m_host, plugin->GetWindow(), boost::bind(&ShotgunIntegrationAPI::fileSelectCallback, this, _1, callback));
+    dlgMgr->OpenFolderDialog(m_host, plugin->GetWindow(), false, boost::bind(&ShotgunIntegrationAPI::fileSelectCallback, this, _1, callback));
+}
+
+void ShotgunIntegrationAPI::pickFilesOrDirectories(FB::JSObjectPtr callback)
+{
+    DialogManager* dlgMgr = DialogManager::get();
+    ShotgunIntegrationPtr plugin = m_plugin.lock();
+    dlgMgr->OpenFolderDialog(m_host, plugin->GetWindow(), true, boost::bind(&ShotgunIntegrationAPI::fileSelectCallback, this, _1, callback));
 }
 
 void ShotgunIntegrationAPI::fileSelectCallback(const FB::VariantList &paths, FB::JSObjectPtr callback)

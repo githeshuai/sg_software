@@ -15,19 +15,23 @@ DialogManager* DialogManager::get()
 }
  
  
-void DialogManagerMac::OpenFolderDialog(const FB::BrowserHostPtr& host, FB::PluginWindow* win, const PathCallback& cb)
+void DialogManagerMac::OpenFolderDialog(const FB::BrowserHostPtr& host, FB::PluginWindow* win, bool multi, const PathCallback& cb)
 {
-    host->ScheduleOnMainThread(boost::shared_ptr<DialogManagerMac>(), boost::bind(&DialogManagerMac::_showFolderDialog, this, win, cb));
+    host->ScheduleOnMainThread(boost::shared_ptr<DialogManagerMac>(), boost::bind(&DialogManagerMac::_showFolderDialog, this, win, multi, cb));
 }
  
-void DialogManagerMac::_showFolderDialog(FB::PluginWindow* win, const PathCallback& cb)
+void DialogManagerMac::_showFolderDialog(FB::PluginWindow* win, bool multi, const PathCallback& cb)
 {
     FB::VariantList out;
     int result;
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
     NSOpenPanel *oPanel = [NSOpenPanel openPanel];
     
-    [oPanel setAllowsMultipleSelection:YES];
+    if ( multi )
+        [oPanel setAllowsMultipleSelection:YES];
+    else
+        [oPanel setAllowsMultipleSelection:NO];
+    
     [oPanel setCanChooseFiles:YES];
     [oPanel setCanChooseDirectories:YES];
     result = [oPanel runModalForDirectory:nil file:nil types:nil];

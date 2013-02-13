@@ -34,6 +34,7 @@ public:
     {
         registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
         registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
+        registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
         
         // Read-only property
         registerProperty("version", make_property(this, &ShotgunIntegrationAPI::get_version));
@@ -55,7 +56,8 @@ public:
     
     void open(const std::string& path);
     void pickFileOrDirectory(FB::JSObjectPtr callback);
-
+    void pickFilesOrDirectories(FB::JSObjectPtr callback);
+    
 private:
     ShotgunIntegrationWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
