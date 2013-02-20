@@ -29,15 +29,29 @@ public:
     /// @see FB::JSAPIAuto::registerProperty
     /// @see FB::JSAPIAuto::registerEvent
     ////////////////////////////////////////////////////////////////////////////
-    ShotgunIntegrationAPI(const ShotgunIntegrationPtr& plugin, const FB::BrowserHostPtr& host) :
-        m_plugin(plugin), m_host(host)
+    ShotgunIntegrationAPI(const ShotgunIntegrationPtr& plugin, const FB::BrowserHostPtr& host, const int securityZone) :
+        JSAPIAuto(securityZone, "<JSAPI-Auto Secure Javascript Object>"), m_plugin(plugin), m_host(host)
     {
-        registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
-        registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
-        registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
-        
-        // Read-only property
-        registerProperty("version", make_property(this, &ShotgunIntegrationAPI::get_version));
+        // using this default all methods are denied unless the zone is SecurityScope_Local
+        FB::scoped_zonelock _l(this, FB::SecurityScope_Local);
+
+        // Register public members
+        {
+            FB::scoped_zonelock _l(this, FB::SecurityScope_Public);
+
+            // Read-only property
+            registerProperty("version", make_property(this, &ShotgunIntegrationAPI::get_version));
+        }
+
+        // Register protected members
+        {
+            FB::scoped_zonelock _l(this, FB::SecurityScope_Protected);
+
+            registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
+            registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
+            registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -53,15 +67,15 @@ public:
 
     // Read-only property ${PROPERTY.ident}
     std::string get_version();
-    
+
     void open(const std::string& path);
     void pickFileOrDirectory(FB::JSObjectPtr callback);
     void pickFilesOrDirectories(FB::JSObjectPtr callback);
-    
+
 private:
     ShotgunIntegrationWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
-    
+
     void fileSelectCallback(const FB::VariantList& paths, FB::JSObjectPtr callback);
 };
 

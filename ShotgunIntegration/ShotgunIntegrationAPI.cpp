@@ -11,13 +11,12 @@
 
 #include "ShotgunIntegrationAPI.h"
 #include "DialogManager.h"
-      
+#include "ProcessManager.h"
+
 void ShotgunIntegrationAPI::open(const std::string& path)
 {
-    char cmd[4096] = "open ";
-    strcat(cmd, path.c_str());
-    
-    system(cmd);
+    ProcessManager* prcMgr = ProcessManager::get();
+    prcMgr->Open(m_host, path);
 }
 
 void ShotgunIntegrationAPI::pickFileOrDirectory(FB::JSObjectPtr callback)

@@ -7,9 +7,12 @@
 
 \**********************************************************/
 
-#include "ShotgunIntegrationAPI.h"
+#include "URI.h"
+#include "DOM/Window.h"
 
+#include "ShotgunIntegrationAPI.h"
 #include "ShotgunIntegration.h"
+#include "WildcardMatch.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn ShotgunIntegration::StaticInitialize()
@@ -90,7 +93,34 @@ void ShotgunIntegration::shutdown()
 FB::JSAPIPtr ShotgunIntegration::createJSAPI()
 {
     // m_host is the BrowserHost
-    return boost::make_shared<ShotgunIntegrationAPI>(FB::ptr_cast<ShotgunIntegration>(shared_from_this()), m_host);
+    return boost::make_shared<ShotgunIntegrationAPI>(FB::ptr_cast<ShotgunIntegration>(shared_from_this()), m_host, getSecurityZone());
+}
+
+int ShotgunIntegration::getSecurityZone()
+{
+    char *env;
+    std::string domain;
+    std::string protocol;
+
+    FB::DOM::WindowPtr window = m_host->getDOMWindow();
+    FB::URI location(window->getLocation());
+
+    env = getenv("SHOTGUN_PLUGIN_PROTOCOL_RESTRICTION");
+    protocol = (env == NULL) ? "https" : std::string(env);
+
+    env = getenv("SHOTGUN_PLUGIN_DOMAIN_RESTRICTION");
+    domain = (env == NULL) ? "shotgunstudio.com" : std::string(env);
+
+    m_host->htmlLog(protocol + " (protocol)");
+    m_host->htmlLog(domain + " (domain)");
+
+    if (location.protocol == "file")
+        return FB::SecurityScope_Local;
+
+    if (WildcardMatch(protocol, location.protocol) && WildcardMatch(domain, location.domain))
+        return FB::SecurityScope_Protected;
+
+    return FB::SecurityScope_Public;
 }
 
 bool ShotgunIntegration::onMouseDown(FB::MouseDownEvent *evt, FB::PluginWindow *)
