@@ -34,13 +34,20 @@ void DialogManagerMac::_showFolderDialog(FB::PluginWindow* win, bool multi, cons
     
     [oPanel setCanChooseFiles:YES];
     [oPanel setCanChooseDirectories:YES];
-    result = [oPanel runModalForDirectory:nil file:nil types:nil];
+    [oPanel setResolvesAliases:NO];
+    
+    result = [oPanel runModal];
     
     if (result == NSOKButton) {
+        BOOL isDir;
         NSArray *filesToOpen = [oPanel filenames];
+        NSFileManager *fm = [NSFileManager defaultManager];
         
         for ( NSString *path in filesToOpen ) {
-            out.push_back([path cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+            std::string strPath([path cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+            if ([fm fileExistsAtPath:path isDirectory:&isDir] && isDir)
+                strPath.push_back('/');
+            out.push_back(strPath);
         }
     }
     

@@ -109,17 +109,22 @@ int ShotgunIntegration::getSecurityZone()
     protocol = (env == NULL) ? "https" : std::string(env);
 
     env = getenv("SHOTGUN_PLUGIN_DOMAIN_RESTRICTION");
-    domain = (env == NULL) ? "shotgunstudio.com" : std::string(env);
+    domain = (env == NULL) ? "*.shotgunstudio.com" : std::string(env);
 
-    m_host->htmlLog(protocol + " (protocol)");
-    m_host->htmlLog(domain + " (domain)");
-
-    if (location.protocol == "file")
+    if (location.protocol == "file") {
+        m_host->htmlLog("Local Security Scope");
         return FB::SecurityScope_Local;
+    }
+    
+    bool domainMatch = WildcardMatch(domain, location.domain);
+    bool protocolMatch = WildcardMatch(protocol, location.protocol);
 
-    if (WildcardMatch(protocol, location.protocol) && WildcardMatch(domain, location.domain))
+    if (protocolMatch && domainMatch) {
+        m_host->htmlLog("Protected Security Scope");
         return FB::SecurityScope_Protected;
-
+    }
+    
+    m_host->htmlLog("Public Security Scope");
     return FB::SecurityScope_Public;
 }
 
