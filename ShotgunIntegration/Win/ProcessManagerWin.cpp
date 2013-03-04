@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #include "win_common.h"
 #include <boost/thread.hpp>
 #include <boost/noncopyable.hpp>

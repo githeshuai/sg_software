@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #ifndef ProcessManagerMac_h__
 #define ProcessManagerMac_h__
 

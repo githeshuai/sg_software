@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #include <string>
 #include <vector>
 #include <boost/thread.hpp>

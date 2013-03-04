@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #ifndef DialogManagerX11_h__
 #define DialogManagerX11_h__
 

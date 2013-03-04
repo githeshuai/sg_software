@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 /**********************************************************\
 
   Auto-generated ShotgunIntegrationAPI.cpp

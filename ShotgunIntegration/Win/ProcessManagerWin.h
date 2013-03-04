@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #ifndef ProcessManagerWin_h__
 #define ProcessManagerWin_h__
 

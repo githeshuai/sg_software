@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #include <string>
 #include <gtk/gtk.h>
 #include <boost/filesystem.hpp>

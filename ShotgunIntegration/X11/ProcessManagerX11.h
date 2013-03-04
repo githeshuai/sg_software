@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Shotgun Software Inc.
+
 #ifndef ProcessManagerX11_h__
 #define ProcessManagerX11_h__
 
