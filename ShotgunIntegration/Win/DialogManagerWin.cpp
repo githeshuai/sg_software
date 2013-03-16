@@ -47,7 +47,8 @@ void DialogManagerWin::_showFileDialog(const FB::BrowserHostPtr &host, HWND wnd,
 	TCHAR Filestring[4096] = {0};
 
 	// Configure the file dialog
-	flags = OFN_EXPLORER | OFN_HIDEREADONLY | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_ENABLESIZING;
+	// flags = OFN_EXPLORER | OFN_HIDEREADONLY | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_ENABLESIZING;
+	flags = OFN_EXPLORER | OFN_HIDEREADONLY | OFN_ENABLEHOOK | OFN_ENABLESIZING;
 	if (multi)
 		flags |= OFN_ALLOWMULTISELECT;
 
@@ -112,9 +113,30 @@ LRESULT CALLBACK AllowDirectoriesProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 		if(LOWORD(wParam) == IDOK) {
 			TCHAR buffer[4096];
 
-			// Get the directory
-			::SendMessage(hWnd, CDM_GETFOLDERPATH, 4096, (LPARAM)buffer);
-			pData->directory = fs::path(buffer);
+			// Get handle to the file list
+			HWND shellHWnd = ::FindWindowEx(hWnd, NULL, L"SHELLDLL_DefView", NULL);
+			HWND lstHWnd = ::FindWindowEx(shellHWnd, NULL, L"SysListView32", NULL);
+
+			// Grab out selections
+			typedef std::vector<fs::path> PathVector;
+			typedef std::multimap<fs::path, bool> PathMap;
+			HRESULT itemCount = ::SendMessage(lstHWnd, LVM_GETITEMCOUNT, 0, 0);
+			LVITEM lvi = {0};
+			lvi.mask = LVIF_TEXT;
+			lvi.cchTextMax = 4096;
+			PathMap selection;
+			for (int i=0; i<itemCount; i++) {
+				lvi.iItem = i;
+				lvi.pszText = buffer;
+				::SendMessage(lstHWnd, LVM_GETITEM, 0, (LPARAM)&lvi);
+				HRESULT selected = ::SendMessage(lstHWnd, LVM_GETITEMSTATE, i, LVIS_SELECTED);
+				if (selected)
+					selection.insert(std::make_pair(fs::path(lvi.pszText), false));
+			}
+
+			// If there is no selection, let the dialog behave normally
+			if (selection.empty())
+				return ::CallWindowProc(pData->wndProc, hWnd, uMsg, wParam, lParam);
 
 			// Get the filenames
 			::SendMessage(hWnd, CDM_GETSPEC, 4096, (LPARAM)buffer);
@@ -122,8 +144,6 @@ LRESULT CALLBACK AllowDirectoriesProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			// Split the spec string to grab individual file names
 			typedef boost::escaped_list_separator<wchar_t, std::wstring::traits_type> Seperator;
 			typedef boost::tokenizer<Seperator, std::wstring::const_iterator, std::wstring> Tokenizer;
-			typedef std::multimap<fs::path, bool> PathMap;
-			typedef std::vector<fs::path> PathVector;
 
 			Seperator seps(L"", L" ", L"\"");
 			std::wstring spec(buffer);
@@ -134,26 +154,11 @@ LRESULT CALLBACK AllowDirectoriesProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 				if (!fname.empty())
 					specPaths.push_back(fname);
 			}
-
-			// Get handle to the file list
-			HWND shellHWnd = ::FindWindowEx(hWnd, NULL, L"SHELLDLL_DefView", NULL);
-			HWND lstHWnd = ::FindWindowEx(shellHWnd, NULL, L"SysListView32", NULL);
-
-			// Grab out selections
-			HRESULT res = ::SendMessage(lstHWnd, LVM_GETITEMCOUNT, 0, 0);
-			LVITEM lvi = {0};
-			lvi.mask = LVIF_TEXT;
-			lvi.cchTextMax = 4096;
-			PathMap selection;
-			for (int i=0; i<res; i++) {
-				lvi.iItem = i;
-				lvi.pszText = buffer;
-				::SendMessage(lstHWnd, LVM_GETITEM, 0, (LPARAM)&lvi);
-				HRESULT selected = ::SendMessage(lstHWnd, LVM_GETITEMSTATE, i, LVIS_SELECTED);
-				if (selected)
-					selection.insert(std::make_pair(fs::path(lvi.pszText), false));
-			}
 			
+			// See if every selection is a file, if so let the dialog behave normally
+			if (specPaths.size() == selection.size())
+				return ::CallWindowProc(pData->wndProc, hWnd, uMsg, wParam, lParam);
+
 			// Account for all specs
 			for (PathVector::const_iterator i=specPaths.begin(); i!=specPaths.end(); ++i) {
 				const fs::path &fname = *i;
@@ -178,6 +183,10 @@ LRESULT CALLBACK AllowDirectoriesProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			// Everything left in the selection have not been accounted for. Must be directories.
 			for (PathMap::iterator i=selection.begin(); i!=selection.end(); ++i)
 				pData->selection.push_back(i->first);
+
+			// Get the directory
+			::SendMessage(hWnd, CDM_GETFOLDERPATH, 4096, (LPARAM)buffer);
+			pData->directory = fs::path(buffer);
 
 			// And post a cancel so the dialog goes away even if only directories were selected
 			pData->handledOk = true;
