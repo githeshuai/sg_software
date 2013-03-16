@@ -17,7 +17,7 @@ class DialogManager
 {
 public:
     static DialogManager* get();
-    virtual void OpenFolderDialog(const FB::BrowserHostPtr& host, FB::PluginWindow* win, bool multi, const PathCallback& cb) = 0;
+    virtual void OpenFolderDialog(const FB::BrowserHostPtr &host, FB::PluginWindow* win, bool multi, const PathCallback& cb) = 0;
  
 protected:
     DialogManager() {}
