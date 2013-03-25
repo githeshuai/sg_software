@@ -17,6 +17,10 @@
 #ifndef H_ShotgunIntegrationAPI
 #define H_ShotgunIntegrationAPI
 
+#define ShotgunIntegrationAPI_MAJOR 0
+#define ShotgunIntegrationAPI_MINOR 0
+#define ShotgunIntegrationAPI_PATCH 1
+
 class ShotgunIntegrationAPI : public FB::JSAPIAuto
 {
 public:
@@ -52,6 +56,7 @@ public:
             registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
             registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
             registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
+            registerMethod("executeTankCommand", make_method(this, &ShotgunIntegrationAPI::executeTankCommand));
         }
 
     }
@@ -68,17 +73,23 @@ public:
     ShotgunIntegrationPtr getPlugin();
 
     // Read-only property ${PROPERTY.ident}
-    std::string get_version();
+    std::map<std::string, int> get_version();
 
     void open(const std::string& path);
     void pickFileOrDirectory(FB::JSObjectPtr callback);
     void pickFilesOrDirectories(FB::JSObjectPtr callback);
+    void executeTankCommand(
+            const std::string &pipelineConfigPath,
+            const std::string &command,
+            const std::vector<std::string> &args,
+            FB::JSObjectPtr callback);
 
 private:
     ShotgunIntegrationWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
 
     void fileSelectCallback(const FB::VariantList& paths, FB::JSObjectPtr callback);
+    void executeTankCommandCallback(int retcode, const std::string& stdout, const std::string& stderr, FB::JSObjectPtr callback);
 };
 
 #endif // H_ShotgunIntegrationAPI

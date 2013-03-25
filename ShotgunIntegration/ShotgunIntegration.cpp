@@ -114,7 +114,7 @@ int ShotgunIntegration::getSecurityZone()
     domain = (env == NULL) ? "*.shotgunstudio.com" : std::string(env);
 
     if (location.protocol == "file") {
-        m_host->htmlLog("Local Security Scope");
+        m_host->htmlLog("[ShotgunIntegration] Local Security Scope");
         return FB::SecurityScope_Local;
     }
     
@@ -122,11 +122,11 @@ int ShotgunIntegration::getSecurityZone()
     bool protocolMatch = WildcardMatch(protocol, location.protocol);
 
     if (protocolMatch && domainMatch) {
-        m_host->htmlLog("Protected Security Scope");
+        m_host->htmlLog("[ShotgunIntegration] Protected Security Scope");
         return FB::SecurityScope_Protected;
     }
     
-    m_host->htmlLog("Public Security Scope");
+    m_host->htmlLog("[ShotgunIntegration] Public Security Scope");
     return FB::SecurityScope_Public;
 }
 

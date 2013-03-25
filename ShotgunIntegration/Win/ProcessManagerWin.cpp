@@ -15,6 +15,7 @@ ProcessManager* ProcessManager::get()
 
 void ProcessManagerWin::Open(const FB::BrowserHostPtr& host, const std::string &path)
 {
+    host->htmlLog("[ShotgunIntegration] Open \"" + path + "\"");
     host->ScheduleOnMainThread(boost::shared_ptr<ProcessManagerWin>(), boost::bind(&ProcessManagerWin::_open, this, path));
 }
 
