@@ -89,7 +89,7 @@ private:
     FB::BrowserHostPtr m_host;
 
     void fileSelectCallback(const FB::VariantList& paths, FB::JSObjectPtr callback);
-    void executeTankCommandCallback(int retcode, const std::string& stdout, const std::string& stderr, FB::JSObjectPtr callback);
+    void executeTankCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback);
 };
 
 #endif // H_ShotgunIntegrationAPI

@@ -6,7 +6,6 @@
 
 #include "ProcessManager.h"
 
-namespace ba = ::boost::asio;
 namespace bp = ::boost::process;
 namespace fs = ::boost::filesystem;
 
@@ -46,16 +45,14 @@ void ProcessManager::ExecuteTankCommand(
     ctx.stdout_behavior = bp::capture_stream();
     ctx.stderr_behavior = bp::capture_stream();
 
-    bp::child child = bp::launch(exec, arguments, ctx);
-    bp::posix_status status = child.wait();
-    
+    bp::child child = bp::launch(exec.string(), arguments, ctx);
+    bp::status status = child.wait();
+
     int retcode;
     if (status.exited())
         retcode = status.exit_status();
-    else if (status.signaled())
-        retcode = -status.term_signal();
-    else if (status.stopped())
-        retcode = -status.stop_signal();
+    else
+        retcode = -1;
     
     std::string line;
     std::ostringstream ossStdout;

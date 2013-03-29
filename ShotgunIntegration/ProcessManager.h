@@ -5,7 +5,6 @@
 
 #include <vector>
 #include <string>
-#include <boost/asio.hpp>
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include "BrowserHost.h"

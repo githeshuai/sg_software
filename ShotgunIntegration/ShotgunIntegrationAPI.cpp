@@ -48,9 +48,9 @@ void ShotgunIntegrationAPI::fileSelectCallback(const FB::VariantList &paths, FB:
     callback->Invoke("", FB::variant_list_of(paths));
 }
 
-void ShotgunIntegrationAPI::executeTankCommandCallback(int retcode, const std::string& stdout, const std::string& stderr, FB::JSObjectPtr callback)
+void ShotgunIntegrationAPI::executeTankCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback)
 {
-    callback->Invoke("", FB::variant_list_of(retcode)(stdout)(stderr));
+    callback->Invoke("", FB::variant_list_of(retcode)(out)(err));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
