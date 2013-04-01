@@ -79,7 +79,10 @@ void DialogManagerWin::_showFileDialog(const FB::BrowserHostPtr &host, HWND wnd,
 		std::vector<fs::path>::iterator j;
 		for (j = data.selection.begin(); j!=data.selection.end(); ++j) {
 			fs::path fname = data.directory / *j;
-			out.push_back(FB::wstring_to_utf8(fname.wstring()));
+			if (fs::is_directory(fname))
+				out.push_back(FB::wstring_to_utf8(fname.wstring() + L"\\"));
+			else
+				out.push_back(FB::wstring_to_utf8(fname.wstring()));
 		}
 	} else if (res) {
 		// res is true if somebody double clicked a file, need to process standard results
