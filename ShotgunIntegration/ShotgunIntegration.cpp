@@ -117,7 +117,7 @@ int ShotgunIntegration::getSecurityZone()
         m_host->htmlLog("[ShotgunIntegration] Local Security Scope");
         return FB::SecurityScope_Local;
     }
-    
+
     bool domainMatch = WildcardMatch(domain, location.domain);
     bool protocolMatch = WildcardMatch(protocol, location.protocol);
 
@@ -125,7 +125,7 @@ int ShotgunIntegration::getSecurityZone()
         m_host->htmlLog("[ShotgunIntegration] Protected Security Scope");
         return FB::SecurityScope_Protected;
     }
-    
+
     m_host->htmlLog("[ShotgunIntegration] Public Security Scope");
     return FB::SecurityScope_Public;
 }

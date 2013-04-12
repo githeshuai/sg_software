@@ -17,12 +17,11 @@ namespace fs = ::boost::filesystem;
 #  error "Unsupported platform."
 #endif
 
-void ProcessManager::ExecuteTankCommand(
+FB::VariantMap ProcessManager::ExecuteTankCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
     const std::string &command,
-    const std::vector<std::string> &args,
-    const ExecuteTankCallback &cb)
+    const std::vector<std::string> &args)
 {
     host->htmlLog("[ShotgunIntegration] ExecuteTankCommand");
     
@@ -31,11 +30,11 @@ void ProcessManager::ExecuteTankCommand(
 
     fs::path exec = pipelineConfigPath;
     if (!fs::is_directory(exec))
-        throw FB::script_error("pipelineConfigPath not found: " + exec.string());
+        throw FB::script_error("Could not find the Tank Configuration on disk: " + exec.string());
     
     exec /= TANK_SCRIPT_NAME;
     if (!fs::is_regular_file(exec))
-        throw FB::script_error("pipelineConfigPath not found");
+        throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
 
     std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
     arguments.insert(arguments.end(), args.begin(), args.end());
@@ -67,5 +66,29 @@ void ProcessManager::ExecuteTankCommand(
         ossStderr << line << std::endl;
     }
 
-    cb(retcode, ossStdout.str(), ossStderr.str());
+    return FB::variant_map_of<std::string>
+        ("retcode", retcode)
+        ("out", ossStdout.str())
+        ("err", ossStderr.str());
+}
+
+void ProcessManager::ExecuteTankCommandAsync(
+        const FB::BrowserHostPtr& host,
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args,
+        const ExecuteTankCallback &cb)
+{
+    boost::thread cmdThread(&ProcessManager::_ExecuteTankCommandAsync, this, host, pipelineConfigPath, command, args, cb);
+}
+
+void ProcessManager::_ExecuteTankCommandAsync(
+        const FB::BrowserHostPtr& host,
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args,
+        const ExecuteTankCallback &cb)
+{
+    FB::VariantMap results = ExecuteTankCommand(host, pipelineConfigPath, command, args);
+    cb(results["retcode"].convert_cast<int>(), results["out"].convert_cast<std::string>(), results["err"].convert_cast<std::string>());
 }

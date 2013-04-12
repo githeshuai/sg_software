@@ -57,6 +57,7 @@ public:
             registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
             registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
             registerMethod("executeTankCommand", make_method(this, &ShotgunIntegrationAPI::executeTankCommand));
+            registerMethod("executeTankCommandAsync", make_method(this, &ShotgunIntegrationAPI::executeTankCommandAsync));
         }
 
     }
@@ -73,12 +74,22 @@ public:
     ShotgunIntegrationPtr getPlugin();
 
     // Read-only property ${PROPERTY.ident}
-    std::map<std::string, int> get_version();
+    FB::VariantMap get_version();
 
+    // Local file linking
     void open(const std::string& path);
+    
     void pickFileOrDirectory(FB::JSObjectPtr callback);
+    
     void pickFilesOrDirectories(FB::JSObjectPtr callback);
-    void executeTankCommand(
+    
+    // Tank functionality
+    FB::VariantMap executeTankCommand(
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args);
+    
+    void executeTankCommandAsync(
             const std::string &pipelineConfigPath,
             const std::string &command,
             const std::vector<std::string> &args,

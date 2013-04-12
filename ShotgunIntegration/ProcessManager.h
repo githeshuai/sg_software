@@ -19,7 +19,12 @@ class ProcessManager
 public:
     static ProcessManager* get();
     virtual void Open(const FB::BrowserHostPtr& host, const std::string &path) = 0;
-    void ExecuteTankCommand(
+    FB::VariantMap ExecuteTankCommand(
+        const FB::BrowserHostPtr& host,
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args);
+    void ExecuteTankCommandAsync(
         const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
         const std::string &command,
@@ -29,6 +34,14 @@ public:
 protected:
     ProcessManager() {}
     virtual ~ProcessManager() {}
+
+private:
+    void _ExecuteTankCommandAsync(
+        const FB::BrowserHostPtr& host,
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args,
+        const ExecuteTankCallback &cb);
 };
 
 #endif // ProcessManager_h__
