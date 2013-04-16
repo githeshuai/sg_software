@@ -132,7 +132,7 @@ This software is released under the Apache License Version 2.0.  The full text i
 
 ## Support
 
-Email <support@shotgunsoftware.com> with any questions or issues.
+You can report issues with the plugin [here](https://github.com/shotgunsoftware/browser-plugin/issues).
 
 ## Changelog
 
