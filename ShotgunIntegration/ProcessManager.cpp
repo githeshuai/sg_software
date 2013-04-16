@@ -17,6 +17,22 @@ namespace fs = ::boost::filesystem;
 #  error "Unsupported platform."
 #endif
 
+void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
+{
+    if (!boost::starts_with(command, "shotgun"))
+        throw FB::script_error("ExecuteTankCommand error");
+    
+    fs::path exec = pipelineConfigPath;
+    if (!fs::is_directory(exec)) {
+        std::string err = "Could not find the Tank Configuration on disk: " + exec.string();
+        throw FB::script_error(err);
+    }
+    
+    exec /= TANK_SCRIPT_NAME;
+    if (!fs::is_regular_file(exec))
+        throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
+}
+
 FB::VariantMap ProcessManager::ExecuteTankCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
@@ -25,16 +41,10 @@ FB::VariantMap ProcessManager::ExecuteTankCommand(
 {
     host->htmlLog("[ShotgunIntegration] ExecuteTankCommand");
     
-    if (!boost::starts_with(command, "shotgun"))
-        throw FB::script_error("ExecuteTankCommand error");
-
-    fs::path exec = pipelineConfigPath;
-    if (!fs::is_directory(exec))
-        throw FB::script_error("Could not find the Tank Configuration on disk: " + exec.string());
+    VerifyArguments(pipelineConfigPath, command);
     
+    fs::path exec = pipelineConfigPath;
     exec /= TANK_SCRIPT_NAME;
-    if (!fs::is_regular_file(exec))
-        throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
 
     std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
     arguments.insert(arguments.end(), args.begin(), args.end());
@@ -79,6 +89,7 @@ void ProcessManager::ExecuteTankCommandAsync(
         const std::vector<std::string> &args,
         const ExecuteTankCallback &cb)
 {
+    VerifyArguments(pipelineConfigPath, command);
     boost::thread cmdThread(&ProcessManager::_ExecuteTankCommandAsync, this, host, pipelineConfigPath, command, args, cb);
 }
 

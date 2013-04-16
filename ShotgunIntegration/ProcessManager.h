@@ -36,6 +36,7 @@ protected:
     virtual ~ProcessManager() {}
 
 private:
+    void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);
     void _ExecuteTankCommandAsync(
         const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
