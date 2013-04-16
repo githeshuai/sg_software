@@ -127,7 +127,7 @@ building should be on libgtk2.
 
 ## License
 
-This software is released un the Apache License Version 2.0.  The full text is available
+This software is released under the Apache License Version 2.0.  The full text is available
 [here](https://github.com/shotgunsoftware/browser-plugin/blob/master/LICENSE.txt?raw=true).
 
 ## Support
