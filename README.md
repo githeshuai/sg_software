@@ -141,3 +141,6 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 **v0.0.1 - 2013 Apr 19**
 
 + added: initial release
+
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/f9b8d249edd1f7c23fe82c98c5b10823 "githalytics.com")](http://githalytics.com/shotgunsoftware/browser-plugin)
