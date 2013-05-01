@@ -38,7 +38,7 @@ void ProcessManagerX11::_open(const FB::BrowserHostPtr& host, const std::string 
 			// parent
 			host->htmlLog(
 				"[ShotgunIntegration] Launched \"" +
-				launcher + " " +
+				launcher + "\" \"" +
 				path +
 				"\" (pid " +
 				boost::lexical_cast<std::string>(pid) + ")"

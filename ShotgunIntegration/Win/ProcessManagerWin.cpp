@@ -23,8 +23,8 @@ void ProcessManagerWin::_open(const std::string &path)
 {
 	HINSTANCE ret;
 	char *env;
-	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
 
+	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
 	ret = ShellExecuteA(
 		NULL,                                // HWND
 		NULL,                                // verb
