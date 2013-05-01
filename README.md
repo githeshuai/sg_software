@@ -18,6 +18,7 @@ The plugin is currently in public beta.
    * [Installing on Windows](#installing-on-windows)
    * [Installing on Linux](#installing-on-linux)
    * [Verifying Installation](#verifying-installation)
+* [Launching via a Wrapper](#launching-via-a-wrapper)
 * [Building](#building)
    * [Building on OSX](#building-on-osx)
    * [Building on Windows](#building-on-windows)
@@ -104,6 +105,14 @@ If you see the message, but instead of reading *"Protected Security Scope"* it r
 then you need to update your environment to activate the plugin.  See the section on [security](#security) above
 for instructions on how to do this.
 
+## Launching via a Wrapper
+*(not yet released, you must build from source for this feature)*
+
+By default the browser will use the operating system default to launch a command (the equivalent of
+xdg-open on linux, open on osx, and run on windows).  If you wish to provide your own wrapper for
+launching files you can set the **SHOTGUN_PLUGIN_LAUNCHER** environment variable to point to your custom wrapper.
+If that is set, then the wrapper will be called with the path as its only argument.
+
 ## Building
 
 The [firebreath build instructions](http://www.firebreath.org/display/documentation/Building+FireBreath+Plugins)
@@ -137,6 +146,10 @@ This software is released under the Apache License Version 2.0.  The full text i
 You can report issues with the plugin [here](https://github.com/shotgunsoftware/browser-plugin/issues).
 
 ## Changelog
+
+**v0.0.2 - Not yet released**
+
++ added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
 
 **v0.0.1 - 2013 Apr 19**
 
