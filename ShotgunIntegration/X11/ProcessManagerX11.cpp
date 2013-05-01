@@ -21,18 +21,24 @@ void ProcessManagerX11::Open(const FB::BrowserHostPtr& host, const std::string &
 
 void ProcessManagerX11::_open(const FB::BrowserHostPtr& host, const std::string &path)
 {
+	char *env;
+	std::string launcher;
 	const char *x11Path = path.c_str();
 	pid_t pid = fork();
 
+	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
+	launcher = (env == NULL) ? "xdg-open" : std::string(env);
+
 	switch(pid) {
 		case 0: // child
-			execlp("xdg-open", "xdg-open", x11Path, NULL);
+			execlp(launcher.c_str(), launcher.c_str(), x11Path, NULL);
 			// should never return from execlp
 			exit(1);
 		default: {
 			// parent
 			host->htmlLog(
-				"[ShotgunIntegration] Launched xdg-open \"" +
+				"[ShotgunIntegration] Launched \"" +
+				launcher + "\" \"" +
 				path +
 				"\" (pid " +
 				boost::lexical_cast<std::string>(pid) + ")"

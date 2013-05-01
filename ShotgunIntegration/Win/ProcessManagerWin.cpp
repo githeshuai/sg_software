@@ -22,13 +22,15 @@ void ProcessManagerWin::Open(const FB::BrowserHostPtr& host, const std::string &
 void ProcessManagerWin::_open(const std::string &path)
 {
 	HINSTANCE ret;
+	char *env;
 
+	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
 	ret = ShellExecuteA(
-		NULL,          // HWND
-		NULL,          // verb
-		path.c_str(),  // file
-		NULL,          // params
-		NULL,          // cwd
-		SW_SHOWDEFAULT // show command
+		NULL,                                // HWND
+		NULL,                                // verb
+		(env == NULL) ? path.c_str() : env,  // file
+		(env == NULL) ? NULL : path.c_str(), // params
+		NULL,                                // cwd
+		SW_SHOWDEFAULT                       // show command
 	);
 }
