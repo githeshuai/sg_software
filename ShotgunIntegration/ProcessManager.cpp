@@ -1,12 +1,10 @@
 // Copyright (c) 2013 Shotgun Software Inc.
 
 #include <boost/assign.hpp>
-#include <boost/process.hpp>
 #include <boost/filesystem.hpp>
 
 #include "ProcessManager.h"
 
-namespace bp = ::boost::process;
 namespace fs = ::boost::filesystem;
 
 #if defined(BOOST_POSIX_API)
@@ -33,6 +31,17 @@ void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, cons
         throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
 }
 
+bp::child ProcessManager::Launch(const std::string &exec, const std::vector<std::string> &arguments)
+{
+    bp::context ctx;
+
+    ctx.environment = bp::self::get_environment();
+    ctx.stdout_behavior = bp::capture_stream();
+    ctx.stderr_behavior = bp::capture_stream();
+
+    return bp::launch(exec, arguments, ctx);
+}
+
 FB::VariantMap ProcessManager::ExecuteTankCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
@@ -49,12 +58,7 @@ FB::VariantMap ProcessManager::ExecuteTankCommand(
     std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
     arguments.insert(arguments.end(), args.begin(), args.end());
 
-    bp::context ctx;
-    ctx.environment = bp::self::get_environment();
-    ctx.stdout_behavior = bp::capture_stream();
-    ctx.stderr_behavior = bp::capture_stream();
-
-    bp::child child = bp::launch(exec.string(), arguments, ctx);
+    bp::child child = Launch(exec.string(), arguments);
     bp::status status = child.wait();
 
     int retcode;

@@ -12,6 +12,9 @@ class ProcessManagerWin : public ProcessManager
 public:
     void Open(const FB::BrowserHostPtr& host, const std::string &path);
     void _open(const std::string &path);
+	bp::child Launch(
+		const std::string &exec,
+		const std::vector<std::string> &arguments);
 
 protected:
     ProcessManagerWin() {};

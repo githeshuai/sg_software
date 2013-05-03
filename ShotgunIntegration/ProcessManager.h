@@ -5,9 +5,12 @@
 
 #include <vector>
 #include <string>
+#include <boost/process.hpp>
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 #include "BrowserHost.h"
+
+namespace bp = ::boost::process;
 
 typedef boost::function<void (const FB::VariantList&)> PathCallback;
 typedef boost::function<void (int, const std::string&, const std::string&)> ExecuteTankCallback;
@@ -34,6 +37,9 @@ public:
 protected:
     ProcessManager() {}
     virtual ~ProcessManager() {}
+    virtual bp::child Launch(
+        const std::string &exec,
+        const std::vector<std::string> &arguments);
 
 private:
     void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);
