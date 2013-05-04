@@ -150,6 +150,7 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 **v0.0.2 - Not yet released**
 
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
++ fixed: run Tank commands hidden on Windows
 
 **v0.0.1 - 2013 Apr 19**
 
