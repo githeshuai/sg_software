@@ -19,7 +19,7 @@
 
 #define ShotgunIntegrationAPI_MAJOR 0
 #define ShotgunIntegrationAPI_MINOR 0
-#define ShotgunIntegrationAPI_PATCH 1
+#define ShotgunIntegrationAPI_PATCH 2
 
 class ShotgunIntegrationAPI : public FB::JSAPIAuto
 {

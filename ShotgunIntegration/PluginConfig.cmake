@@ -39,7 +39,7 @@ set(MOZILLA_PLUGINID "shotgunsoftware.com/ShotgunIntegration")
 # strings
 set(FBSTRING_CompanyName "Shotgun Software Inc.")
 set(FBSTRING_PluginDescription "Shotgun Integration")
-set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
+set(FBSTRING_PLUGIN_VERSION "0.0.2")
 set(FBSTRING_LegalCopyright "Copyright 2013 Shotgun Software Inc.")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
 set(FBSTRING_ProductName "Shotgun Integration")

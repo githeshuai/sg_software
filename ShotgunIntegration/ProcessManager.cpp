@@ -17,18 +17,23 @@ namespace fs = ::boost::filesystem;
 
 void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
 {
-    if (!boost::starts_with(command, "shotgun"))
-        throw FB::script_error("ExecuteTankCommand error");
+    try {
+        if (!boost::starts_with(command, "shotgun"))
+            throw FB::script_error("ExecuteTankCommand error");
     
-    fs::path exec = pipelineConfigPath;
-    if (!fs::is_directory(exec)) {
-        std::string err = "Could not find the Tank Configuration on disk: " + exec.string();
-        throw FB::script_error(err);
+        fs::path exec = pipelineConfigPath;
+        if (!fs::is_directory(exec)) {
+            std::string err = "Could not find the Tank Configuration on disk: " + exec.string();
+            throw FB::script_error(err);
+        }
+    
+        exec /= TANK_SCRIPT_NAME;
+        if (!fs::is_regular_file(exec))
+            throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
+    } catch (fs::filesystem_error &e) {
+        std::string msg = std::string("Error finding the Tank command on disk: ") + e.what();
+        throw FB::script_error(msg);
     }
-    
-    exec /= TANK_SCRIPT_NAME;
-    if (!fs::is_regular_file(exec))
-        throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
 }
 
 bp::child ProcessManager::Launch(const std::string &exec, const std::vector<std::string> &arguments)
@@ -50,40 +55,48 @@ FB::VariantMap ProcessManager::ExecuteTankCommand(
 {
     host->htmlLog("[ShotgunIntegration] ExecuteTankCommand");
     
-    VerifyArguments(pipelineConfigPath, command);
+    try {
+        VerifyArguments(pipelineConfigPath, command);
     
-    fs::path exec = pipelineConfigPath;
-    exec /= TANK_SCRIPT_NAME;
+        fs::path exec = pipelineConfigPath;
+        exec /= TANK_SCRIPT_NAME;
 
-    std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
-    arguments.insert(arguments.end(), args.begin(), args.end());
+        std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
+        arguments.insert(arguments.end(), args.begin(), args.end());
 
-    bp::child child = Launch(exec.string(), arguments);
-    bp::status status = child.wait();
+        bp::child child = Launch(exec.string(), arguments);
+        bp::status status = child.wait();
 
-    int retcode;
-    if (status.exited())
-        retcode = status.exit_status();
-    else
-        retcode = -1;
-    
-    std::string line;
-    std::ostringstream ossStdout;
-    bp::pistream &isStdout = child.get_stdout();
-    while (std::getline(isStdout, line)) {
-        ossStdout << line << std::endl;
+        int retcode;
+        if (status.exited())
+            retcode = status.exit_status();
+        else
+            retcode = -1;
+
+        std::string line;
+        std::ostringstream ossStdout;
+        bp::pistream &isStdout = child.get_stdout();
+        while (std::getline(isStdout, line)) {
+            ossStdout << line << std::endl;
+        }
+        
+        std::ostringstream ossStderr;
+        bp::pistream &isStderr = child.get_stderr();
+        while (std::getline(isStderr, line)) {
+            ossStderr << line << std::endl;
+        }
+        
+        return FB::variant_map_of<std::string>
+            ("retcode", retcode)
+            ("out", ossStdout.str())
+            ("err", ossStderr.str());
+    } catch (std::exception &e) {
+        // May be running in a non-main thread.  Avoid propagating exception
+        return FB::variant_map_of<std::string>
+            ("retcode", -1)
+            ("out", std::string(""))
+            ("err", std::string(e.what()));
     }
-    
-    std::ostringstream ossStderr;
-    bp::pistream &isStderr = child.get_stderr();
-    while (std::getline(isStderr, line)) {
-        ossStderr << line << std::endl;
-    }
-
-    return FB::variant_map_of<std::string>
-        ("retcode", retcode)
-        ("out", ossStdout.str())
-        ("err", ossStderr.str());
 }
 
 void ProcessManager::ExecuteTankCommandAsync(
