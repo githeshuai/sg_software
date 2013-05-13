@@ -151,6 +151,7 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
 + fixed: run Tank commands hidden on Windows
++ fixed: crashes if Tank command or directory is misconfigured.  issue [#5](https://github.com/shotgunsoftware/browser-plugin/issues/5).
 
 **v0.0.1 - 2013 Apr 19**
 
