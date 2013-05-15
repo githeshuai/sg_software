@@ -53,6 +53,10 @@ If you run a local installation of shotgun, you can set two environment variable
 * **SHOTGUN_PLUGIN_PROTOCOL_RESTRICTION** - The protocol portion of a url must match this.  Defaults to "https".
 * **SHOTGUN_PLUGIN_DOMAIN_RESTRICTION** - The host portion of a url must match this.  Defaults to "*.shotgunstudio.com"
 
+These environment variables can contain wildcards to match multiple values.
+SHOTGUN_PLUGIN_DOMAIN_RESTRICTION can be a comma separated set of wildcarded domains to
+match *(not yet released, you must build from source for this feature)*.
+
 ## Installation
 
 ### Installing on OSX
@@ -152,6 +156,7 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
 + fixed: run Tank commands hidden on Windows
 + fixed: crashes if Tank command or directory is misconfigured.  issue [#5](https://github.com/shotgunsoftware/browser-plugin/issues/5).
++ added: ability to set SHOTGUN_PLUGIN_DOMAIN_RESTRICTION to a comma separated list of values
 
 **v0.0.1 - 2013 Apr 19**
 
