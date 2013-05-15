@@ -8,6 +8,7 @@
   implementation for the Shotgun Integration project
 
 \**********************************************************/
+#include <boost/algorithm/string.hpp>
 
 #include "URI.h"
 #include "DOM/Window.h"
@@ -118,8 +119,20 @@ int ShotgunIntegration::getSecurityZone()
         return FB::SecurityScope_Local;
     }
 
-    bool domainMatch = WildcardMatch(domain, location.domain);
+    // simple wildcard match for protocol
     bool protocolMatch = WildcardMatch(protocol, location.protocol);
+
+    // split domain on commas
+    bool domainMatch = false;
+    std::vector<std::string> domains;
+    boost::algorithm::split(domains, domain, boost::algorithm::is_any_of(","));
+    for (std::vector<std::string>::iterator it = domains.begin(); it != domains.end(); ++it) {
+        std::string entry = *it;
+        boost::algorithm::trim(entry);
+        domainMatch |= WildcardMatch(entry, location.domain);
+        if (domainMatch)
+            break;
+    }
 
     if (protocolMatch && domainMatch) {
         m_host->htmlLog("[ShotgunIntegration] Protected Security Scope");
