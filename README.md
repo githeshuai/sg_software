@@ -55,7 +55,7 @@ If you run a local installation of shotgun, you can set two environment variable
 
 These environment variables can contain wildcards to match multiple values.
 SHOTGUN_PLUGIN_DOMAIN_RESTRICTION can be a comma separated set of wildcarded domains to
-match *(not yet released, you must build from source for this feature)*.
+match.
 
 ## Installation
 
@@ -110,7 +110,6 @@ then you need to update your environment to activate the plugin.  See the sectio
 for instructions on how to do this.
 
 ## Launching via a Wrapper
-*(not yet released, you must build from source for this feature)*
 
 By default the browser will use the operating system default to launch a command (the equivalent of
 xdg-open on linux, open on osx, and run on windows).  If you wish to provide your own wrapper for
@@ -151,7 +150,7 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 
 ## Changelog
 
-**v0.0.2 - Not yet released**
+**v0.0.2 - 2013 May 22**
 
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
 + fixed: run Tank commands hidden on Windows
