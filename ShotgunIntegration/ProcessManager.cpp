@@ -53,7 +53,14 @@ FB::VariantMap ProcessManager::ExecuteTankCommand(
     const std::string &command,
     const std::vector<std::string> &args)
 {
-    host->htmlLog("[ShotgunIntegration] ExecuteTankCommand");
+    return _ExecuteTankCommand(pipelineConfigPath, command, args);
+}
+
+FB::VariantMap ProcessManager::_ExecuteTankCommand(
+    const std::string &pipelineConfigPath,
+    const std::string &command,
+    const std::vector<std::string> &args)
+{
     
     try {
         VerifyArguments(pipelineConfigPath, command);
@@ -106,17 +113,17 @@ void ProcessManager::ExecuteTankCommandAsync(
         const std::vector<std::string> &args,
         const ExecuteTankCallback &cb)
 {
+    host->htmlLog("[ShotgunIntegration] ExecuteTankCommandAsync");
     VerifyArguments(pipelineConfigPath, command);
-    boost::thread cmdThread(&ProcessManager::_ExecuteTankCommandAsync, this, host, pipelineConfigPath, command, args, cb);
+    boost::thread cmdThread(&ProcessManager::_ExecuteTankCommandAsync, this, pipelineConfigPath, command, args, cb);
 }
 
 void ProcessManager::_ExecuteTankCommandAsync(
-        const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args,
         const ExecuteTankCallback &cb)
 {
-    FB::VariantMap results = ExecuteTankCommand(host, pipelineConfigPath, command, args);
+    FB::VariantMap results = _ExecuteTankCommand(pipelineConfigPath, command, args);
     cb(results["retcode"].convert_cast<int>(), results["out"].convert_cast<std::string>(), results["err"].convert_cast<std::string>());
 }

@@ -43,8 +43,13 @@ protected:
 
 private:
     void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);
+    
+    FB::VariantMap _ExecuteTankCommand(
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args);
+    
     void _ExecuteTankCommandAsync(
-        const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args,
