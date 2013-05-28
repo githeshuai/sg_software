@@ -1,7 +1,7 @@
 # The Shotgun Browser Plugin (Beta)
 
 This is a browser plugin that is an extension for the [Shotgun production tracking system](http://www.shotgunsoftware.com/).
-It implements the [local file integration](https://support.shotgunsoftware.com/entries/235640-Linking-to-Local-Files) and
+It implements the [local file integration](https://support.shotgunsoftware.com/entries/235640) and
 [pipeline integration](https://tank.shotgunsoftware.com/entries/22126502-What-is-Tank-and-how-do-I-Install-it-) features
 of Shotgun.
 
@@ -37,7 +37,7 @@ and has been written with security in mind.
 
 ## Supported Browsers
 
-This plugin is supported for all browsers the Shotgun supports.  The detailed list is [here](https://support.shotgunsoftware.com/entries/52237-Supported-Browsers),
+This plugin is supported for all browsers the Shotgun supports.  The detailed list is [here](https://support.shotgunsoftware.com/entries/23533197),
 but most versions of Safari, Chrome, and Firefox should work.
 
 ## Supported Platforms
