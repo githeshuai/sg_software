@@ -7,13 +7,7 @@
 
 namespace fs = ::boost::filesystem;
 
-#if defined(BOOST_POSIX_API)
-#  define TANK_SCRIPT_NAME "tank"
-#elif defined(BOOST_WINDOWS_API)
-#  define TANK_SCRIPT_NAME "tank.bat"
-#else
-#  error "Unsupported platform."
-#endif
+#define TANK_SCRIPT_NAME "tank"
 
 void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
 {
@@ -36,17 +30,6 @@ void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, cons
     }
 }
 
-bp::child ProcessManager::Launch(const std::string &exec, const std::vector<std::string> &arguments)
-{
-    bp::context ctx;
-
-    ctx.environment = bp::self::get_environment();
-    ctx.stdout_behavior = bp::capture_stream();
-    ctx.stderr_behavior = bp::capture_stream();
-
-    return bp::launch(exec, arguments, ctx);
-}
-
 FB::VariantMap ProcessManager::ExecuteTankCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
@@ -60,8 +43,7 @@ FB::VariantMap ProcessManager::_ExecuteTankCommand(
     const std::string &pipelineConfigPath,
     const std::string &command,
     const std::vector<std::string> &args)
-{
-    
+{    
     try {
         VerifyArguments(pipelineConfigPath, command);
     
@@ -71,7 +53,12 @@ FB::VariantMap ProcessManager::_ExecuteTankCommand(
         std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
         arguments.insert(arguments.end(), args.begin(), args.end());
 
-        bp::child child = Launch(exec.string(), arguments);
+		bp::context ctx;
+		ctx.environment = bp::self::get_environment();
+		ctx.stdout_behavior = bp::capture_stream();
+		ctx.stderr_behavior = bp::capture_stream();
+
+		bp::child child = bp::launch(exec.string(), arguments, ctx);
         bp::status status = child.wait();
 
         int retcode;

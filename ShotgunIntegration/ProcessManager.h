@@ -37,18 +37,14 @@ public:
 protected:
     ProcessManager() {}
     virtual ~ProcessManager() {}
-    virtual bp::child Launch(
-        const std::string &exec,
-        const std::vector<std::string> &arguments);
 
-private:
-    void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);
-    
-    FB::VariantMap _ExecuteTankCommand(
+    void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);    
+    virtual FB::VariantMap _ExecuteTankCommand(
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args);
     
+private:
     void _ExecuteTankCommandAsync(
         const std::string &pipelineConfigPath,
         const std::string &command,
