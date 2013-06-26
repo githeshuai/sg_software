@@ -13,6 +13,7 @@ The plugin is currently in public beta.
 * [Supported Browsers](#supported-browsers)
 * [Supported Platforms](#supported-platforms)
 * [Security](#security)
+   * [Example - Configuring the browser plugin for a local Shotgun server](#example---configuring-the-browser-plugin-for-a-local-shotgun-server)
 * [Installation](#installation)
    * [Installing on OSX](#installing-on-osx)
    * [Installing on Windows](#installing-on-windows)
