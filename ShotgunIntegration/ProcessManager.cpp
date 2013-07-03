@@ -7,7 +7,8 @@
 
 namespace fs = ::boost::filesystem;
 
-#define TANK_SCRIPT_NAME "tank"
+#define TANK_SCRIPT_NAME "shotgun"
+#define TANK_FALLBACK_SCRIPT_NAME "tank"
 
 void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
 {
@@ -15,13 +16,17 @@ void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, cons
         if (!boost::starts_with(command, "shotgun"))
             throw FB::script_error("ExecuteTankCommand error");
     
-        fs::path exec = pipelineConfigPath;
-        if (!fs::is_directory(exec)) {
-            std::string err = "Could not find the Tank Configuration on disk: " + exec.string();
+        fs::path pcPath = pipelineConfigPath;
+        if (!fs::is_directory(pcPath)) {
+            std::string err = "Could not find the Tank Configuration on disk: " + pcPath.string();
             throw FB::script_error(err);
         }
     
-        exec /= TANK_SCRIPT_NAME;
+        fs::path exec = pcPath / TANK_SCRIPT_NAME;
+
+        if (!fs::is_regular_file(exec))
+            exec = pcPath / TANK_FALLBACK_SCRIPT_NAME;
+        
         if (!fs::is_regular_file(exec))
             throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
     } catch (fs::filesystem_error &e) {
@@ -47,8 +52,11 @@ FB::VariantMap ProcessManager::_ExecuteTankCommand(
     try {
         VerifyArguments(pipelineConfigPath, command);
     
-        fs::path exec = pipelineConfigPath;
-        exec /= TANK_SCRIPT_NAME;
+        fs::path pcPath = pipelineConfigPath;
+        fs::path exec = pcPath / TANK_SCRIPT_NAME;
+
+        if (!fs::is_regular_file(exec))
+            exec = pcPath / TANK_FALLBACK_SCRIPT_NAME;
 
         std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
         arguments.insert(arguments.end(), args.begin(), args.end());

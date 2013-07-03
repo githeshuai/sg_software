@@ -67,8 +67,11 @@ FB::VariantMap ProcessManagerWin::_ExecuteTankCommand(
 		fs::wpath stderrTmp = TempFilePath();
 		
 		// Build command line
-		fs::wpath exec = pipelineConfigPath;
-        exec /= "tank.bat";
+		fs::wpath pcPath = pipelineConfigPath;
+        fs::wpath exec = pcPath / "shotgun.bat";
+
+        if (!fs::is_regular_file(exec))
+            exec = pcPath / "tank.bat";
 
 		std::vector<std::wstring> arguments = boost::assign::list_of
 			(std::wstring(command.begin(), command.end()));
