@@ -54,7 +54,7 @@ void ProcessManagerWin::_open(const std::string &path)
 	);
 }
 
-FB::VariantMap ProcessManagerWin::_ExecuteTankCommand(
+FB::VariantMap ProcessManagerWin::_ExecuteToolkitCommand(
     const std::string &pipelineConfigPath,
     const std::string &command,
     const std::vector<std::string> &args)

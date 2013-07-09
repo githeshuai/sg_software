@@ -36,20 +36,20 @@ void ShotgunIntegrationAPI::pickFilesOrDirectories(FB::JSObjectPtr callback)
     dlgMgr->OpenFolderDialog(m_host, plugin->GetWindow(), true, boost::bind(&ShotgunIntegrationAPI::fileSelectCallback, this, _1, callback));
 }
 
-FB::VariantMap ShotgunIntegrationAPI::executeTankCommand(
+FB::VariantMap ShotgunIntegrationAPI::executeToolkitCommand(
     const std::string &pipelineConfigPath, const std::string &command, const std::vector<std::string> &args)
 {
     ProcessManager* prcMgr = ProcessManager::get();
-    return prcMgr->ExecuteTankCommand(m_host, pipelineConfigPath, command, args);
+    return prcMgr->ExecuteToolkitCommand(m_host, pipelineConfigPath, command, args);
 }
 
-void ShotgunIntegrationAPI::executeTankCommandAsync(
+void ShotgunIntegrationAPI::executeToolkitCommandAsync(
     const std::string &pipelineConfigPath, const std::string &command, const std::vector<std::string> &args, FB::JSObjectPtr callback)
 {
     ProcessManager* prcMgr = ProcessManager::get();
-    prcMgr->ExecuteTankCommandAsync(
+    prcMgr->ExecuteToolkitCommandAsync(
                 m_host, pipelineConfigPath, command, args,
-                boost::bind(&ShotgunIntegrationAPI::executeTankCommandCallback, this, _1, _2, _3, callback));
+                boost::bind(&ShotgunIntegrationAPI::executeToolkitCommandCallback, this, _1, _2, _3, callback));
 }
 
 void ShotgunIntegrationAPI::fileSelectCallback(const FB::VariantList &paths, FB::JSObjectPtr callback)
@@ -57,7 +57,7 @@ void ShotgunIntegrationAPI::fileSelectCallback(const FB::VariantList &paths, FB:
     callback->Invoke("", FB::variant_list_of(paths));
 }
 
-void ShotgunIntegrationAPI::executeTankCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback)
+void ShotgunIntegrationAPI::executeToolkitCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback)
 {
     callback->Invoke("", FB::variant_list_of(retcode)(out)(err));
 }

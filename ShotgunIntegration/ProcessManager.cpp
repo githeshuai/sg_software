@@ -7,8 +7,8 @@
 
 namespace fs = ::boost::filesystem;
 
-#define TANK_SCRIPT_NAME "shotgun"
-#define TANK_FALLBACK_SCRIPT_NAME "tank"
+#define TOOLKIT_SCRIPT_NAME "shotgun"
+#define TOOLKIT_FALLBACK_SCRIPT_NAME "tank"
 
 void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
 {
@@ -18,33 +18,33 @@ void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, cons
     
         fs::path pcPath = pipelineConfigPath;
         if (!fs::is_directory(pcPath)) {
-            std::string err = "Could not find the Tank Configuration on disk: " + pcPath.string();
+            std::string err = "Could not find the Pipeline Configuration on disk: " + pcPath.string();
             throw FB::script_error(err);
         }
     
-        fs::path exec = pcPath / TANK_SCRIPT_NAME;
+        fs::path exec = pcPath / TOOLKIT_SCRIPT_NAME;
 
         if (!fs::is_regular_file(exec))
-            exec = pcPath / TANK_FALLBACK_SCRIPT_NAME;
+            exec = pcPath / TOOLKIT_FALLBACK_SCRIPT_NAME;
         
         if (!fs::is_regular_file(exec))
-            throw FB::script_error("Could not find the Tank command on disk: " + exec.string());
+            throw FB::script_error("Could not find the Toolkit command on disk: " + exec.string());
     } catch (fs::filesystem_error &e) {
-        std::string msg = std::string("Error finding the Tank command on disk: ") + e.what();
+        std::string msg = std::string("Error finding the Toolkit command on disk: ") + e.what();
         throw FB::script_error(msg);
     }
 }
 
-FB::VariantMap ProcessManager::ExecuteTankCommand(
+FB::VariantMap ProcessManager::ExecuteToolkitCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
     const std::string &command,
     const std::vector<std::string> &args)
 {
-    return _ExecuteTankCommand(pipelineConfigPath, command, args);
+    return _ExecuteToolkitCommand(pipelineConfigPath, command, args);
 }
 
-FB::VariantMap ProcessManager::_ExecuteTankCommand(
+FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
     const std::string &pipelineConfigPath,
     const std::string &command,
     const std::vector<std::string> &args)
@@ -53,10 +53,10 @@ FB::VariantMap ProcessManager::_ExecuteTankCommand(
         VerifyArguments(pipelineConfigPath, command);
     
         fs::path pcPath = pipelineConfigPath;
-        fs::path exec = pcPath / TANK_SCRIPT_NAME;
+        fs::path exec = pcPath / TOOLKIT_SCRIPT_NAME;
 
         if (!fs::is_regular_file(exec))
-            exec = pcPath / TANK_FALLBACK_SCRIPT_NAME;
+            exec = pcPath / TOOLKIT_FALLBACK_SCRIPT_NAME;
 
         std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
         arguments.insert(arguments.end(), args.begin(), args.end());
@@ -101,24 +101,24 @@ FB::VariantMap ProcessManager::_ExecuteTankCommand(
     }
 }
 
-void ProcessManager::ExecuteTankCommandAsync(
+void ProcessManager::ExecuteToolkitCommandAsync(
         const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args,
-        const ExecuteTankCallback &cb)
+        const ExecuteToolkitCallback &cb)
 {
-    host->htmlLog("[ShotgunIntegration] ExecuteTankCommandAsync");
+    host->htmlLog("[ShotgunIntegration] ExecuteToolkitCommandAsync");
     VerifyArguments(pipelineConfigPath, command);
-    boost::thread cmdThread(&ProcessManager::_ExecuteTankCommandAsync, this, pipelineConfigPath, command, args, cb);
+    boost::thread cmdThread(&ProcessManager::_ExecuteToolkitCommandAsync, this, pipelineConfigPath, command, args, cb);
 }
 
-void ProcessManager::_ExecuteTankCommandAsync(
+void ProcessManager::_ExecuteToolkitCommandAsync(
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args,
-        const ExecuteTankCallback &cb)
+        const ExecuteToolkitCallback &cb)
 {
-    FB::VariantMap results = _ExecuteTankCommand(pipelineConfigPath, command, args);
+    FB::VariantMap results = _ExecuteToolkitCommand(pipelineConfigPath, command, args);
     cb(results["retcode"].convert_cast<int>(), results["out"].convert_cast<std::string>(), results["err"].convert_cast<std::string>());
 }

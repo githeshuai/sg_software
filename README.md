@@ -2,7 +2,7 @@
 
 This is a browser plugin that is an extension for the [Shotgun production tracking system](http://www.shotgunsoftware.com/).
 It implements the [local file integration](https://support.shotgunsoftware.com/entries/235640) and
-[pipeline integration](https://tank.shotgunsoftware.com/entries/22126502-What-is-Tank-and-how-do-I-Install-it-) features
+[pipeline integration](https://tank.shotgunsoftware.com/entries/22126502) features
 of Shotgun.
 
 The plugin is currently in public beta.
@@ -153,8 +153,8 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 **v0.0.2 - 2013 May 22**
 
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
-+ fixed: run Tank commands hidden on Windows
-+ fixed: crashes if Tank command or directory is misconfigured.  issue [#5](https://github.com/shotgunsoftware/browser-plugin/issues/5).
++ fixed: run Toolkit commands hidden on Windows
++ fixed: crashes if Toolkit command or directory is misconfigured.  issue [#5](https://github.com/shotgunsoftware/browser-plugin/issues/5).
 + added: ability to set SHOTGUN_PLUGIN_DOMAIN_RESTRICTION to a comma separated list of values
 
 **v0.0.1 - 2013 Apr 19**

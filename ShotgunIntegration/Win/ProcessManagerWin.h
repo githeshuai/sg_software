@@ -17,7 +17,7 @@ protected:
     ProcessManagerWin() {};
     ~ProcessManagerWin() {};
 
-	FB::VariantMap _ExecuteTankCommand(
+	FB::VariantMap _ExecuteToolkitCommand(
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args);
