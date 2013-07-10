@@ -150,6 +150,12 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 
 ## Changelog
 
+**v0.0.3 - 2013 July 10**
+
++ added: support for Pipeline Toolkit rename
++ fixed: use ShellExecuteEx on Windows to run commands in a proper batch environment
++ fixed: fixed a dangling reference to the host that was causing plugin crashes on tab switching
+
 **v0.0.2 - 2013 May 22**
 
 + added: ability to use a custom launcher via SHOTGUN_PLUGIN_LAUNCHER
