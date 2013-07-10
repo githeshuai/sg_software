@@ -12,13 +12,16 @@ class ProcessManagerWin : public ProcessManager
 public:
     void Open(const FB::BrowserHostPtr& host, const std::string &path);
     void _open(const std::string &path);
-	bp::child Launch(
-		const std::string &exec,
-		const std::vector<std::string> &arguments);
 
 protected:
     ProcessManagerWin() {};
     ~ProcessManagerWin() {};
+
+	FB::VariantMap _ExecuteToolkitCommand(
+        const std::string &pipelineConfigPath,
+        const std::string &command,
+        const std::vector<std::string> &args);
+
     friend class ProcessManager;
 };
 #endif // ProcessManagerWin_h__

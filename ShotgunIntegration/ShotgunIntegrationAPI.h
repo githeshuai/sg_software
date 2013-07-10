@@ -19,7 +19,7 @@
 
 #define ShotgunIntegrationAPI_MAJOR 0
 #define ShotgunIntegrationAPI_MINOR 0
-#define ShotgunIntegrationAPI_PATCH 2
+#define ShotgunIntegrationAPI_PATCH 3
 
 class ShotgunIntegrationAPI : public FB::JSAPIAuto
 {
@@ -56,8 +56,10 @@ public:
             registerMethod("open", make_method(this, &ShotgunIntegrationAPI::open));
             registerMethod("pickFileOrDirectory", make_method(this, &ShotgunIntegrationAPI::pickFileOrDirectory));
             registerMethod("pickFilesOrDirectories", make_method(this, &ShotgunIntegrationAPI::pickFilesOrDirectories));
-            registerMethod("executeTankCommand", make_method(this, &ShotgunIntegrationAPI::executeTankCommand));
-            registerMethod("executeTankCommandAsync", make_method(this, &ShotgunIntegrationAPI::executeTankCommandAsync));
+            registerMethod("executeTankCommand", make_method(this, &ShotgunIntegrationAPI::executeToolkitCommand));
+            registerMethod("executeToolkitCommand", make_method(this, &ShotgunIntegrationAPI::executeToolkitCommand));
+            registerMethod("executeTankCommandAsync", make_method(this, &ShotgunIntegrationAPI::executeToolkitCommandAsync));
+            registerMethod("executeToolkitCommandAsync", make_method(this, &ShotgunIntegrationAPI::executeToolkitCommandAsync));
         }
 
     }
@@ -83,13 +85,13 @@ public:
     
     void pickFilesOrDirectories(FB::JSObjectPtr callback);
     
-    // Tank functionality
-    FB::VariantMap executeTankCommand(
+    // Toolkit functionality
+    FB::VariantMap executeToolkitCommand(
         const std::string &pipelineConfigPath,
         const std::string &command,
         const std::vector<std::string> &args);
     
-    void executeTankCommandAsync(
+    void executeToolkitCommandAsync(
             const std::string &pipelineConfigPath,
             const std::string &command,
             const std::vector<std::string> &args,
@@ -100,7 +102,7 @@ private:
     FB::BrowserHostPtr m_host;
 
     void fileSelectCallback(const FB::VariantList& paths, FB::JSObjectPtr callback);
-    void executeTankCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback);
+    void executeToolkitCommandCallback(int retcode, const std::string& out, const std::string& err, FB::JSObjectPtr callback);
 };
 
 #endif // H_ShotgunIntegrationAPI
