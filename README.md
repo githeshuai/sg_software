@@ -13,6 +13,7 @@ The plugin is currently in public beta.
 * [Supported Browsers](#supported-browsers)
 * [Supported Platforms](#supported-platforms)
 * [Security](#security)
+   * [Example - Configuring the browser plugin for a local Shotgun server](#example---configuring-the-browser-plugin-for-a-local-shotgun-server)
 * [Installation](#installation)
    * [Installing on OSX](#installing-on-osx)
    * [Installing on Windows](#installing-on-windows)
@@ -56,6 +57,33 @@ If you run a local installation of shotgun, you can set two environment variable
 These environment variables can contain wildcards to match multiple values.
 SHOTGUN_PLUGIN_DOMAIN_RESTRICTION can be a comma separated set of wildcarded domains to
 match.
+
+### Example - Configuring the browser plugin for a local Shotgun server
+
+If you using the browser plugin with a hosted Shotgun installation (e.g. your Shotgun url ends with `shotgunstudio.com`), things 
+should work out of the box using the browser plugin's default settings. However, if you are using the browser plugin
+with a locally installed shotgun client, things will not work out of the box. You need to tell the browser plugin which 
+urls you use for your internal site. 
+
+Here's an example how to set things up when using a local Shotgun. Imagine your shotgun site can be reached
+using the following addresses:
+
+- `http://shotgun`
+- `http://shotgun.mystudio.int`
+
+We then need to set the following two environment variables:
+
+```
+SHOTGUN_PLUGIN_PROTOCOL_RESTRICTION = "http"
+SHOTGUN_PLUGIN_DOMAIN_RESTRICTION = "shotgun,shotgun.mystudio.int"
+```
+
+Environment variables are set differently on different operating systems. On Linux, they are 
+typically added to a login script. On windows, they can be modified using the control panel and
+on Macosx they are typically added to a special configuration file (`/etc/launchd.conf`).
+
+
+
 
 ## Installation
 
