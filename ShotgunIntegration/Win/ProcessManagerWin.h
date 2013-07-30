@@ -4,24 +4,26 @@
 #define ProcessManagerWin_h__
 
 #include <string>
-
 #include "../ProcessManager.h"
 
 class ProcessManagerWin : public ProcessManager
 {
 public:
-    void Open(const FB::BrowserHostPtr& host, const std::string &path);
-    void _open(const std::string &path);
+    virtual void 			Open(const FB::BrowserHostPtr& host, const std::string &path);
 
 protected:
-    ProcessManagerWin() {};
-    ~ProcessManagerWin() {};
+    						ProcessManagerWin();
+    virtual 				~ProcessManagerWin();
 
-	FB::VariantMap _ExecuteToolkitCommand(
-        const std::string &pipelineConfigPath,
-        const std::string &command,
-        const std::vector<std::string> &args);
+    virtual const char *	GetToolkitScriptName();
+    virtual const char *	GetToolkitFallbackScriptName();
 
-    friend class ProcessManager;
+	virtual bp::child 		Launch(const std::string &exec,
+								const std::vector<std::string> &arguments);
+
+private:
+    void 					_open(const std::string &path);
+
+	friend class ProcessManager;
 };
 #endif // ProcessManagerWin_h__
