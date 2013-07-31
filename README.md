@@ -178,6 +178,10 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 
 ## Changelog
 
+**v0.0.4 - 2013 July 30**
+
++ fixed: Revert to CreateProcess to avoid security messages when running Tank off of a mount not tagged as intranet
+
 **v0.0.3 - 2013 July 10**
 
 + added: support for Pipeline Toolkit rename
