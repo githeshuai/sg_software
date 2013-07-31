@@ -7,9 +7,39 @@
 
 namespace fs = ::boost::filesystem;
 
-#define TOOLKIT_SCRIPT_NAME "shotgun"
-#define TOOLKIT_FALLBACK_SCRIPT_NAME "tank"
+/*
+ * Construction
+ */
+ProcessManager::ProcessManager()
+{}
 
+/*
+ * Destruction
+ */
+ProcessManager::~ProcessManager()
+{}
+
+/*
+ * Return the name of the toolkit script
+ */
+const char * ProcessManager::GetToolkitScriptName()
+{
+	return "shotgun";
+}
+
+/*
+ * Return the legacy name of the toolkit script as the
+ * fall-back option
+ */
+const char * ProcessManager::GetToolkitFallbackScriptName()
+{
+	return "tank";
+}
+
+/*
+ * Verify that the arguments passed in to the plug-in are valid and can
+ * be run
+*/
 void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, const std::string &command)
 {
     try {
@@ -22,19 +52,23 @@ void ProcessManager::VerifyArguments(const std::string &pipelineConfigPath, cons
             throw FB::script_error(err);
         }
     
-        fs::path exec = pcPath / TOOLKIT_SCRIPT_NAME;
+        fs::path exec = pcPath / GetToolkitScriptName();
 
         if (!fs::is_regular_file(exec))
-            exec = pcPath / TOOLKIT_FALLBACK_SCRIPT_NAME;
+            exec = pcPath / GetToolkitFallbackScriptName();
         
         if (!fs::is_regular_file(exec))
             throw FB::script_error("Could not find the Toolkit command on disk: " + exec.string());
+
     } catch (fs::filesystem_error &e) {
         std::string msg = std::string("Error finding the Toolkit command on disk: ") + e.what();
         throw FB::script_error(msg);
     }
 }
 
+/*
+ * Execute a toolkit command
+ */
 FB::VariantMap ProcessManager::ExecuteToolkitCommand(
     const FB::BrowserHostPtr& host,
     const std::string &pipelineConfigPath,
@@ -44,6 +78,23 @@ FB::VariantMap ProcessManager::ExecuteToolkitCommand(
     return _ExecuteToolkitCommand(pipelineConfigPath, command, args);
 }
 
+/*
+ * Launch the script/executable with the specified arguments and return the result
+ */
+bp::child ProcessManager::Launch(const std::string &exec, const std::vector<std::string> &arguments)
+{
+    bp::context ctx;
+
+    ctx.environment = bp::self::get_environment();
+    ctx.stdout_behavior = bp::capture_stream();
+    ctx.stderr_behavior = bp::capture_stream();
+
+    return bp::launch(exec, arguments, ctx);
+}
+
+/*
+ * Actually execute the command
+ */
 FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
     const std::string &pipelineConfigPath,
     const std::string &command,
@@ -53,10 +104,10 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
         VerifyArguments(pipelineConfigPath, command);
     
         fs::path pcPath = pipelineConfigPath;
-        fs::path exec = pcPath / TOOLKIT_SCRIPT_NAME;
+        fs::path exec = pcPath / GetToolkitScriptName();
 
         if (!fs::is_regular_file(exec))
-            exec = pcPath / TOOLKIT_FALLBACK_SCRIPT_NAME;
+            exec = pcPath / GetToolkitFallbackScriptName();
 
         std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
         arguments.insert(arguments.end(), args.begin(), args.end());
@@ -66,7 +117,7 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
 		ctx.stdout_behavior = bp::capture_stream();
 		ctx.stderr_behavior = bp::capture_stream();
 
-		bp::child child = bp::launch(exec.string(), arguments, ctx);
+		bp::child child = Launch(exec.string(), arguments);
         bp::status status = child.wait();
 
         int retcode;
@@ -101,6 +152,9 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
     }
 }
 
+/*
+ * Execute the toolkit command asynchronously
+ */
 void ProcessManager::ExecuteToolkitCommandAsync(
         const FB::BrowserHostPtr& host,
         const std::string &pipelineConfigPath,
@@ -113,6 +167,9 @@ void ProcessManager::ExecuteToolkitCommandAsync(
     boost::thread cmdThread(&ProcessManager::_ExecuteToolkitCommandAsync, this, pipelineConfigPath, command, args, cb);
 }
 
+/*
+ * Actually execute the toolkit command asynchronously
+ */
 void ProcessManager::_ExecuteToolkitCommandAsync(
         const std::string &pipelineConfigPath,
         const std::string &command,

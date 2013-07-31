@@ -17,39 +17,50 @@ typedef boost::function<void (int, const std::string&, const std::string&)> Exec
 
 namespace FB { class PluginWindow; }
 
+/*
+ * Base class used to execute toolkit commands
+ */
 class ProcessManager
 {
 public:
-    static ProcessManager* get();
-    virtual void Open(const FB::BrowserHostPtr& host, const std::string &path) = 0;
-    FB::VariantMap ExecuteToolkitCommand(
-        const FB::BrowserHostPtr& host,
-        const std::string &pipelineConfigPath,
-        const std::string &command,
-        const std::vector<std::string> &args);
-    void ExecuteToolkitCommandAsync(
-        const FB::BrowserHostPtr& host,
-        const std::string &pipelineConfigPath,
-        const std::string &command,
-        const std::vector<std::string> &args,
-        const ExecuteToolkitCallback &cb);
+    static ProcessManager * get();
+
+    virtual void 			Open(const FB::BrowserHostPtr& host, const std::string &path) = 0;
+
+    FB::VariantMap 			ExecuteToolkitCommand(const FB::BrowserHostPtr& host,
+									const std::string &pipelineConfigPath,
+									const std::string &command,
+									const std::vector<std::string> &args);
+
+    void 					ExecuteToolkitCommandAsync(const FB::BrowserHostPtr& host,
+									const std::string &pipelineConfigPath,
+									const std::string &command,
+									const std::vector<std::string> &args,
+									const ExecuteToolkitCallback &cb);
 
 protected:
-    ProcessManager() {}
-    virtual ~ProcessManager() {}
+    						ProcessManager();
+    virtual 				~ProcessManager();
 
-    void VerifyArguments(const std::string &pipelineConfigPath, const std::string &command);    
-    virtual FB::VariantMap _ExecuteToolkitCommand(
-        const std::string &pipelineConfigPath,
-        const std::string &command,
-        const std::vector<std::string> &args);
+    virtual const char *	GetToolkitScriptName();
+    virtual const char *	GetToolkitFallbackScriptName();
+
+    virtual bp::child 		Launch(const std::string &exec,
+    								const std::vector<std::string> &arguments);
+
     
 private:
-    void _ExecuteToolkitCommandAsync(
-        const std::string &pipelineConfigPath,
-        const std::string &command,
-        const std::vector<std::string> &args,
-        const ExecuteToolkitCallback &cb);
+    void 					VerifyArguments(const std::string &pipelineConfigPath,
+    								const std::string &command);
+
+    FB::VariantMap 			_ExecuteToolkitCommand(const std::string &pipelineConfigPath,
+									const std::string &command,
+									const std::vector<std::string> &args);
+
+    void 					_ExecuteToolkitCommandAsync(const std::string &pipelineConfigPath,
+									const std::string &command,
+									const std::vector<std::string> &args,
+									const ExecuteToolkitCallback &cb);
 };
 
 #endif // ProcessManager_h__
