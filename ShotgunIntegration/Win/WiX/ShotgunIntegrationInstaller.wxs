@@ -1,76 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="${FBSTRING_PluginName}" Language="1033" Version="${FBSTRING_PLUGIN_VERSION}" Manufacturer="${FBSTRING_CompanyName}" UpgradeCode="{${FBControl_WixUpgradeCode_GUID}}">
-        <Package InstallerVersion="200" Compressed="yes" Description="Installer for the ${FBSTRING_PluginName} plugin" InstallScope="perUser" />
-        <Upgrade Id="{dfbd6a52-0623-505e-901d-11af1e7dc428}">
-            <UpgradeVersion
-                Property="OLD_VERSION_FOUND"
-                Minimum="0.0.1" IncludeMinimum="yes"
-                Maximum="${FBSTRING_PLUGIN_VERSION}" IncludeMaximum="yes"
-                OnlyDetect="no" IgnoreRemoveFailure="yes"
-                MigrateFeatures="yes" />
-        </Upgrade>
-		<Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable" />
-        <InstallExecuteSequence>
-            <RemoveExistingProducts After="InstallInitialize" />
-            <InstallExecute After="RemoveExistingProducts" />
-        </InstallExecuteSequence>
-        <Media Id="1" Cabinet="${PLUGIN_NAME}.cab" EmbedCab="yes" />
+  <Product Id="*" Name="${FBSTRING_PluginName}" Language="1033" Version="${FBSTRING_PLUGIN_VERSION}" Manufacturer="${FBSTRING_CompanyName}" UpgradeCode="{${FBControl_WixUpgradeCode_GUID}}">
+    <Package InstallerVersion="200" Compressed="yes" Description="Installer for the ${FBSTRING_PluginName} plugin" InstallScope="perUser" />
+    <Upgrade Id="{dfbd6a52-0623-505e-901d-11af1e7dc428}">
+      <UpgradeVersion
+          Property="OLD_VERSION_FOUND"
+          Minimum="0.0.1" IncludeMinimum="yes"
+          Maximum="${FBSTRING_PLUGIN_VERSION}" IncludeMaximum="yes"
+          OnlyDetect="no" IgnoreRemoveFailure="yes"
+          MigrateFeatures="yes" />
+    </Upgrade>
+    <Property Id="MSIRESTARTMANAGERCONTROL" Value="Disable" />
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize" />
+      <InstallExecute After="RemoveExistingProducts" />
+    </InstallExecuteSequence>
+    <Media Id="1" Cabinet="${PLUGIN_NAME}.cab" EmbedCab="yes" />
 
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="${FB_WIX_INSTALL_LOCATION}">
-                <Directory Id="CompanyDir" Name="${COMPANY_NAME}">
-                    <Component Id="CompanyDirComp" Guid="*">
-                        <RemoveFolder Id="RemoveCompanyDir" On="uninstall" />
-                        <RegistryValue
-                            Root="HKCU"
-                            Key="SOFTWARE\${COMPANY_NAME}"
-                            Name="Uninstall"
-                            Type="string"
-                            Value="${FBSTRING_PLUGIN_VERSION}"
-                            KeyPath="yes" />
-                    </Component>
-                    <Directory Id="PluginNameDir" Name="${FBSTRING_PluginName}">
-                        <Component Id="PluginNameDirComp" Guid="*">
-                            <RemoveFolder Id="RemovePluginNameDir" On="uninstall" />
-                            <RegistryValue
-                                Root="HKCU"
-                                Key="SOFTWARE\${COMPANY_NAME}\${PLUGIN_NAME}"
-                                Name="Uninstall"
-                                Type="string"
-                                Value="${FBSTRING_PLUGIN_VERSION}"
-                                KeyPath="yes" />
-                        </Component>
-                        <Directory Id="INSTALLDIR" Name="${FBSTRING_PLUGIN_VERSION}">
-                            <Component Id="InstallDirComp" Guid="*">
-                                <RemoveFolder Id="RemoveInstallDir" On="uninstall" />
-                                <RegistryValue
-                                    Root="HKCU"
-                                    Key="SOFTWARE\${COMPANY_NAME}\${PLUGIN_NAME}\${FBSTRING_PLUGIN_VERSION}"
-                                    Name="Uninstall"
-                                    Type="string"
-                                    Value="${FBSTRING_PLUGIN_VERSION}"
-                                    KeyPath="yes" />
-                            </Component>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="${FB_WIX_INSTALL_LOCATION}">
+        <Directory Id="CompanyDir" Name="${COMPANY_NAME}">
+          <Component Id="CompanyDirComp" Guid="*">
+            <RemoveFolder Id="RemoveCompanyDir" On="uninstall" />
+            <RegistryValue
+                Root="HKCU"
+                Key="SOFTWARE\${COMPANY_NAME}"
+                Name="Uninstall"
+                Type="string"
+                Value="${FBSTRING_PLUGIN_VERSION}"
+                KeyPath="yes" />
+          </Component>
+          <Directory Id="PluginNameDir" Name="${FBSTRING_PluginName}">
+            <Component Id="PluginNameDirComp" Guid="*">
+              <RemoveFolder Id="RemovePluginNameDir" On="uninstall" />
+              <RegistryValue
+                  Root="HKCU"
+                  Key="SOFTWARE\${COMPANY_NAME}\${PLUGIN_NAME}"
+                  Name="Uninstall"
+                  Type="string"
+                  Value="${FBSTRING_PLUGIN_VERSION}"
+                  KeyPath="yes" />
+            </Component>
+            <Directory Id="INSTALLDIR" Name="${FBSTRING_PLUGIN_VERSION}">
+              <Component Id="InstallDirComp" Guid="*">
+                <RemoveFolder Id="RemoveInstallDir" On="uninstall" />
+                <RegistryValue
+                    Root="HKCU"
+                    Key="SOFTWARE\${COMPANY_NAME}\${PLUGIN_NAME}\${FBSTRING_PLUGIN_VERSION}"
+                    Name="Uninstall"
+                    Type="string"
+                    Value="${FBSTRING_PLUGIN_VERSION}"
+                    KeyPath="yes" />
+              </Component>
 
-                            <!-- Put Additional files here: -->
-                            <!-- example:
+              <!-- Put Additional files here: -->
+              <!-- example:
                             <Component Id="UniqueComponentId" Guid="*">
                                 <File Id="uniqueFileId" KeyPath="yes" Source="SourceDir\filename.ext" />
                             </Component>
                             /example -->
-                            <!--  -->
-                        </Directory>
-                    </Directory>
-                </Directory>
+              <!--  -->
             </Directory>
+          </Directory>
         </Directory>
+      </Directory>
+    </Directory>
 
-        <Feature Id="MainPluginFeature" Title="${FBSTRING_ProductName}" Level="1">
-            <ComponentRef Id="InstallDirComp"/>
-            <ComponentRef Id="PluginNameDirComp"/>
-            <ComponentRef Id="CompanyDirComp"/>
-            <ComponentGroupRef Id="PluginDLLGroup"/>
-        </Feature>
-    </Product>
+    <Feature Id="MainPluginFeature" Title="${FBSTRING_ProductName}" Level="1">
+      <ComponentRef Id="InstallDirComp"/>
+      <ComponentRef Id="PluginNameDirComp"/>
+      <ComponentRef Id="CompanyDirComp"/>
+      <ComponentGroupRef Id="PluginDLLGroup"/>
+    </Feature>
+
+    <!-- Customize the welcome dialog and banner background images -->
+    <!-- Upper banner image: 493px x 58px -->
+    <WixVariable Id="WixUIBannerBmp" Value="${CMAKE_CURRENT_SOURCE_DIR}/Win/WiX/images/banner_bg.bmp" />
+    <!-- Background images: 493px x 312px -->
+    <WixVariable Id="WixUIDialogBmp" Value="${CMAKE_CURRENT_SOURCE_DIR}/Win/WiX/images/welcome_bg.bmp" />
+
+    <UI Id="Shotgun_Install_Dir">
+      <!-- These are copies of the standard dialogs copied here in order to customize the title description text colour! -->
+      <Dialog Id="InstallDirDlgCustom" Width="370" Height="270" Title="!(loc.InstallDirDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="{\ShotgunFontWhite8}!(loc.InstallDirDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.InstallDirDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="FolderLabel" Type="Text" X="20" Y="60" Width="290" Height="30" NoPrefix="yes" Text="!(loc.InstallDirDlgFolderLabel)" />
+        <Control Id="Folder" Type="PathEdit" X="20" Y="100" Width="320" Height="18" Property="WIXUI_INSTALLDIR" Indirect="yes" />
+        <Control Id="ChangeFolder" Type="PushButton" X="20" Y="120" Width="56" Height="17" Text="!(loc.InstallDirDlgChange)" />
+      </Dialog>
+      <Dialog Id="MaintenanceTypeDlgCustom" Width="370" Height="270" Title="!(loc.MaintenanceTypeDlg_Title)">
+        <Control Id="ChangeButton" Type="PushButton" X="40" Y="65" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgChangeButtonTooltip)" Default="yes" Text="!(loc.MaintenanceTypeDlgChangeButton)">
+          <Publish Property="WixUI_InstallMode" Value="Change">1</Publish>
+          <Condition Action="disable">ARPNOMODIFY</Condition>
+        </Control>
+        <Control Id="ChangeText" Type="Text" X="60" Y="85" Width="280" Height="20" Text="!(loc.MaintenanceTypeDlgChangeText)">
+          <Condition Action="hide">ARPNOMODIFY</Condition>
+        </Control>
+        <Control Id="ChangeDisabledText" Type="Text" X="60" Y="85" Width="280" Height="20" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgChangeDisabledText)" Hidden="yes">
+          <Condition Action="show">ARPNOMODIFY</Condition>
+        </Control>
+        <Control Id="RepairButton" Type="PushButton" X="40" Y="118" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgRepairButtonTooltip)" Text="!(loc.MaintenanceTypeDlgRepairButton)">
+          <Publish Property="WixUI_InstallMode" Value="Repair">1</Publish>
+          <Condition Action="disable">ARPNOREPAIR</Condition>
+        </Control>
+        <Control Id="RepairText" Type="Text" X="60" Y="138" Width="280" Height="30" Text="!(loc.MaintenanceTypeDlgRepairText)">
+          <Condition Action="hide">ARPNOREPAIR</Condition>
+        </Control>
+        <Control Id="RepairDisabledText" Type="Text" X="60" Y="138" Width="280" Height="30" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgRepairDisabledText)" Hidden="yes">
+          <Condition Action="show">ARPNOREPAIR</Condition>
+        </Control>
+        <Control Id="RemoveButton" Type="PushButton" X="40" Y="171" Width="80" Height="17" ToolTip="!(loc.MaintenanceTypeDlgRemoveButtonTooltip)" Text="!(loc.MaintenanceTypeDlgRemoveButton)">
+          <Publish Property="WixUI_InstallMode" Value="Remove">1</Publish>
+          <Condition Action="disable">ARPNOREMOVE</Condition>
+        </Control>
+        <Control Id="RemoveText" Type="Text" X="60" Y="191" Width="280" Height="20" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgRemoveText)">
+          <Condition Action="hide">ARPNOREMOVE</Condition>
+        </Control>
+        <Control Id="RemoveDisabledText" Type="Text" X="60" Y="191" Width="280" Height="20" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgRemoveDisabledText)" Hidden="yes">
+          <Condition Action="show">ARPNOREMOVE</Condition>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUINext)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.MaintenanceTypeDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="340" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.MaintenanceTypeDlgTitle)" />
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="340" Height="20" Transparent="yes" NoPrefix="yes" Text="{\ShotgunFontWhite8}!(loc.MaintenanceTypeDlgDescription)" />
+      </Dialog>
+
+      <!-- Fonts -->
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8"/>
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12"/>
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" Red="255" Green="255" Blue="255"/>
+      <TextStyle Id="ShotgunFontWhite8" FaceName="Tahoma" Size="8"  Red="255" Green="255" Blue="255"/>
+      
+      <!-- Use the standard install dir UI template but modified to remove the license screen -->
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="InstallDir" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InstallDirDlgCustom" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlgCustom">NOT Installed</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="InstallDirDlgCustom" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlgCustom" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlgCustom" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlgCustom" Order="2">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlgCustom">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlgCustom" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlgCustom" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlgCustom" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Property Id="ARPNOMODIFY" Value="1" />      
+    </UI>
+    <UIRef Id="WixUI_Common" />    
+    <UIRef Id="WixUI_ErrorProgressText" />
+    
+  </Product>
 </Wix>
