@@ -73,6 +73,10 @@
       <ComponentGroupRef Id="PluginDLLGroup"/>
     </Feature>
 
+    <!-- The icon that will be used in the add/remove programs list -->
+    <Icon Id="icon.ico" SourceFile="${CMAKE_CURRENT_SOURCE_DIR}/Win/WiX/images/icon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
     <!-- Customize the welcome dialog and banner background images -->
     <!-- Upper banner image: 493px x 58px -->
     <WixVariable Id="WixUIBannerBmp" Value="${CMAKE_CURRENT_SOURCE_DIR}/Win/WiX/images/banner_bg.bmp" />
