@@ -102,7 +102,7 @@ to *~/Library/Internet Plug-Ins/* instead.
 
 ### Installing on Windows
 
-A pre-built binary is available [here](https://github.com/shotgunsoftware/browser-plugin/blob/binary/ShotgunIntegration.exe?raw=true).
+A pre-built binary is available [here](https://github.com/shotgunsoftware/browser-plugin/blob/binary/ShotgunIntegration.msi?raw=true).
 
 Double clicking on the installer will bring up a standard installer window:
 
