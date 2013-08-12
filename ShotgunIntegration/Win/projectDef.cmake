@@ -64,10 +64,16 @@ add_wix_installer( ${PLUGIN_NAME}
     ${PROJECT_NAME}
     )
 
-# This is an example of how to add a build step to sign the WiX installer
-# -- uncomment lines below this to enable signing --
+# Sign the .msi installer
 firebreath_sign_file("${PLUGIN_NAME}_WiXInstall"
     "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.msi"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../shotgunsoftware_code_signing_cert.pfx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../shotgunsoftware_code_signing_cert.txt"
+    "http://timestamp.verisign.com/scripts/timestamp.dll")
+
+# Sign the .exe installer
+firebreath_sign_file("${PLUGIN_NAME}_WiXInstallExe"
+    "${FB_BIN_DIR}/${PLUGIN_NAME}/${CMAKE_CFG_INTDIR}/${PLUGIN_NAME}.exe"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../shotgunsoftware_code_signing_cert.pfx"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../shotgunsoftware_code_signing_cert.txt"
     "http://timestamp.verisign.com/scripts/timestamp.dll")
