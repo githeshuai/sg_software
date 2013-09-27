@@ -108,6 +108,9 @@ Double clicking on the installer will bring up a standard installer window:
 
 <img src="https://github.com/shotgunsoftware/browser-plugin/blob/binary/windows_installer.png?raw=true" width="40%" alt="installer"/>
 
+If you manage an environment that does not support distribution via the installer, you can use regsvr32 and [this dll](https://github.com/shotgunsoftware/browser-plugin/blob/binary/npShotgunIntegration.dll?raw=true)
+as an alternative.
+
 ### Installing on Linux
 
 A pre-built binary is available [here](https://github.com/shotgunsoftware/browser-plugin/blob/binary/npShotgunIntegration.so?raw=true).
