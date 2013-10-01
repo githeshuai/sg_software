@@ -42,14 +42,14 @@ set(FBSTRING_PluginDescription "Shotgun Browser Integration")
 set(FBSTRING_PLUGIN_VERSION "0.0.4")
 set(FBSTRING_LegalCopyright "Copyright 2013 Shotgun Software Inc.")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
-# FBSTRING_ProductName is the string used to find the plug-in 
+# FBSTRING_ProductName is the string used to find the plug-in
 # from the Java script and should not be changed!
 set(FBSTRING_ProductName "Shotgun Integration")
 set(FBSTRING_FileExtents "")
 if ( FB_PLATFORM_ARCH_32 )
-    set(FBSTRING_PluginName "Shotgun Browser Integration")  # No 32bit postfix to maintain backward compatability.
+    set(FBSTRING_PluginName "Shotgun Integration")  # No 32bit postfix to maintain backward compatability.
 else ( FB_PLATFORM_ARCH_32 )
-    set(FBSTRING_PluginName "Shotgun Browser Integration_${FB_PLATFORM_ARCH_NAME}")
+    set(FBSTRING_PluginName "Shotgun Integration_${FB_PLATFORM_ARCH_NAME}")
 endif ( FB_PLATFORM_ARCH_32 )
 set(FBSTRING_MIMEType "application/x-shotgunintegration")
 
