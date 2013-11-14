@@ -41,6 +41,10 @@ and has been written with security in mind.
 This plugin is supported for all browsers the Shotgun supports.  The detailed list is [here](https://support.shotgunsoftware.com/entries/23533197),
 but most versions of Safari, Chrome, and Firefox should work.
 
+Note: Chrome does not support CentOS 6, and there are solutions for getting it working that use an alternate libc,
+which will crash the plugin.  A working Chrome RPM can be found [here](http://people.centos.org/hughesjr/chromium/6/x86_64/RPMS).
+See [issue #7](https://github.com/shotgunsoftware/browser-plugin/issues/7) for the gory details.
+
 ## Supported Platforms
 
 This plugin is supported on OSX (10.6+), Windows (XP+), and Linux.
