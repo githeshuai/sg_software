@@ -118,13 +118,22 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
 		ctx.stderr_behavior = bp::capture_stream();
 
 		bp::child child = Launch(exec.string(), arguments);
-        bp::status status = child.wait();
-
+        
+        // Keep trying through interrupts
         int retcode;
-        if (status.exited())
-            retcode = status.exit_status();
-        else
-            retcode = -1;
+        while (true) {
+            try {
+                bp::status status = child.wait();
+                if (status.exited())
+                    retcode = status.exit_status();
+                else
+                    retcode = -1;
+                break;
+            } catch (boost::system::system_error &e) {
+                if (e.code().value() != EINTR)
+                    throw;
+            }
+        }
 
         std::string line;
         std::ostringstream ossStdout;
@@ -149,6 +158,11 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
             ("retcode", -1)
             ("out", std::string(""))
             ("err", std::string(e.what()));
+    } catch (...) {
+        return FB::variant_map_of<std::string>
+            ("retcode", -1)
+            ("out", std::string(""))
+            ("err", std::string("unknown error executing toolkit command"));
     }
 }
 
