@@ -24,7 +24,7 @@ ProcessManager::~ProcessManager()
  */
 const char * ProcessManager::GetToolkitScriptName()
 {
-	return "shotgun";
+    return "shotgun";
 }
 
 /*
@@ -33,7 +33,7 @@ const char * ProcessManager::GetToolkitScriptName()
  */
 const char * ProcessManager::GetToolkitFallbackScriptName()
 {
-	return "tank";
+    return "tank";
 }
 
 /*
@@ -93,6 +93,47 @@ bp::child ProcessManager::Launch(const std::string &exec, const std::vector<std:
 }
 
 /*
+ * Helper class to retrieve std output/error from a child process.
+ */
+class OutputHandler
+{
+public:
+	/*
+	 * Construction
+	 */
+    OutputHandler(bp::pistream &rIStream)
+        : m_rIStream(rIStream)
+    {}
+    /*
+     * Return the output result
+     */
+    inline const std::string &GetOutput() const
+    {
+        return m_output;
+    }
+    /*
+     * This will get run as the thread procedure
+     * when a boost::thread is constructed with
+     * an instance of this class
+     */
+    void operator()()
+    {
+        // read from the stream until it's closed:
+        std::string line;
+        std::ostringstream oss;
+        while (std::getline(m_rIStream, line))
+        {
+            oss << line << std::endl;
+        }
+        m_output = oss.str();
+    }
+
+private:
+    bp::pistream &  m_rIStream;
+    std::string     m_output;
+};
+
+/*
  * Actually execute the command
  */
 FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
@@ -112,14 +153,25 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
         std::vector<std::string> arguments = boost::assign::list_of(exec.string())(command);
         arguments.insert(arguments.end(), args.begin(), args.end());
 
-		bp::context ctx;
-		ctx.environment = bp::self::get_environment();
-		ctx.stdout_behavior = bp::capture_stream();
-		ctx.stderr_behavior = bp::capture_stream();
+        bp::context ctx;
+        ctx.environment = bp::self::get_environment();
+        ctx.stdout_behavior = bp::capture_stream();
+        ctx.stderr_behavior = bp::capture_stream();
 
-		bp::child child = Launch(exec.string(), arguments);
-        
-        // Keep trying through interrupts
+        bp::child child = Launch(exec.string(), arguments);
+
+        // Read std output and error streams from child process.  Each stream is
+        // read in a separate thread to avoid them potentially blocking each other.
+        OutputHandler stdoutHandler(child.get_stdout());
+        OutputHandler stderrHandler(child.get_stderr());
+
+        // Note: the boost::thread_group destructor will delete all thread
+        // instances in the group which is why they are constructed on the heap
+        boost::thread_group threadGroup;
+        threadGroup.add_thread(new boost::thread(boost::ref(stdoutHandler)));
+        threadGroup.add_thread(new boost::thread(boost::ref(stderrHandler)));
+
+        // Wait for the child process to complete - keep trying through interrupts
         int retcode;
         while (true) {
             try {
@@ -135,23 +187,13 @@ FB::VariantMap ProcessManager::_ExecuteToolkitCommand(
             }
         }
 
-        std::string line;
-        std::ostringstream ossStdout;
-        bp::pistream &isStdout = child.get_stdout();
-        while (std::getline(isStdout, line)) {
-            ossStdout << line << std::endl;
-        }
-        
-        std::ostringstream ossStderr;
-        bp::pistream &isStderr = child.get_stderr();
-        while (std::getline(isStderr, line)) {
-            ossStderr << line << std::endl;
-        }
+        // wait for OutputHandler threads to complete (all output has been read)
+        threadGroup.join_all();
         
         return FB::variant_map_of<std::string>
             ("retcode", retcode)
-            ("out", ossStdout.str())
-            ("err", ossStderr.str());
+            ("out", stdoutHandler.GetOutput())
+            ("err", stderrHandler.GetOutput());
     } catch (std::exception &e) {
         // May be running in a non-main thread.  Avoid propagating exception
         return FB::variant_map_of<std::string>
