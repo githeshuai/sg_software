@@ -9,20 +9,20 @@
 class ProcessManagerWin : public ProcessManager
 {
 public:
-    virtual void 			Open(const FB::BrowserHostPtr& host, const std::string &path);
+	virtual void 			Open(const FB::BrowserHostPtr& host, const std::string &path);
 
 protected:
-    						ProcessManagerWin();
-    virtual 				~ProcessManagerWin();
+							ProcessManagerWin();
+	virtual 				~ProcessManagerWin();
 
-    virtual const char *	GetToolkitScriptName();
-    virtual const char *	GetToolkitFallbackScriptName();
+	virtual const char *	GetToolkitScriptName();
+	virtual const char *	GetToolkitFallbackScriptName();
 
 	virtual bp::child 		Launch(const std::string &exec,
 								const std::vector<std::string> &arguments);
 
 private:
-    void 					_open(const std::string &path);
+	void 					_open(const std::string &rPath);
 
 	friend class ProcessManager;
 };

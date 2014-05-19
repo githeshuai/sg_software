@@ -46,7 +46,8 @@ void DialogManagerMac::_showFolderDialog(FB::PluginWindow* win, bool multi, cons
         NSFileManager *fm = [NSFileManager defaultManager];
 
         for ( NSString *path in filesToOpen ) {
-            std::string strPath([path cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+            // encode the path as a UTF8 cstring to accomodate non-Ascii character sets
+            std::string strPath([path UTF8String]);
             if ([fm fileExistsAtPath:path isDirectory:&isDir] && isDir)
                 strPath.push_back('/');
             out.push_back(strPath);
