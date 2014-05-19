@@ -1,6 +1,7 @@
 // Copyright (c) 2013 Shotgun Software Inc.
 
 #include "win_common.h"
+#include "utf8_tools.h"
 
 #include <boost/assign.hpp>
 #include <boost/thread.hpp>
@@ -13,14 +14,17 @@
 
 namespace fs = ::boost::filesystem;
 
+// environment variable to look for when a custom launch script is used
+const wchar_t *gLauncherEnvVar = L"SHOTGUN_PLUGIN_LAUNCHER";
+
 /*
  * Factory method to return the correct instance of the
  * ProcessManager
  */
 ProcessManager* ProcessManager::get()
 {
-    static ProcessManagerWin inst;
-    return &inst;
+	static ProcessManagerWin inst;
+	return &inst;
 }
 
 /*
@@ -58,35 +62,42 @@ const char * ProcessManagerWin::GetToolkitFallbackScriptName()
  */
 void ProcessManagerWin::Open(const FB::BrowserHostPtr& host, const std::string &path)
 {
-	char *env;
-
-	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
+	// check to see if a non-default launcher has been specified in the environment:
+	const wchar_t *env = _wgetenv(gLauncherEnvVar);
 	if(env == NULL)
-	    host->htmlLog("[ShotgunIntegration] Open \"" + path + "\"");
-	else {
-		std::string envStr(env);
-	    host->htmlLog("[ShotgunIntegration] \"" + envStr + "\" \"" + path + "\"");
+	{
+		host->htmlLog("[ShotgunIntegration] Open \"" + path + "\"");
+	}
+	else 
+	{
+		std::ostringstream oss;
+		oss << "[ShotgunIntegration] \"" << FB::wstring_to_utf8(env) << "\" \"" << path << "\"";
+		host->htmlLog(oss.str());
 	}
 
+	// launch the file on the main thread:
 	host->ScheduleOnMainThread(boost::shared_ptr<ProcessManagerWin>(), boost::bind(&ProcessManagerWin::_open, this, path));
 }
 
 /*
  *
  */
-void ProcessManagerWin::_open(const std::string &path)
+void ProcessManagerWin::_open(const std::string &rPath)
 {
-	HINSTANCE ret;
-	char *env;
+	// convert path from UTF8 multi-byte cstring to wstring:
+	const std::wstring wPath = FB::utf8_to_wstring(rPath);
 
-	env = getenv("SHOTGUN_PLUGIN_LAUNCHER");
-	ret = ShellExecuteA(
-		NULL,                                // HWND
-		NULL,                                // verb
-		(env == NULL) ? path.c_str() : env,  // file
-		(env == NULL) ? NULL : path.c_str(), // params
-		NULL,                                // cwd
-		SW_SHOWDEFAULT                       // show command
+	// check to see if a non-default launcher has been specified in the environment:
+	const wchar_t *env = _wgetenv(gLauncherEnvVar);
+
+	// execute the launcher for the path:
+	HINSTANCE ret = ShellExecuteW(
+		NULL,									// HWND
+		NULL,									// verb
+		(env == NULL) ? wPath.c_str() : env, 	// file
+		(env == NULL) ? NULL : wPath.c_str(),	// params
+		NULL,									// cwd
+		SW_SHOWDEFAULT							// show command
 	);
 }
 
@@ -98,17 +109,17 @@ bp::child ProcessManagerWin::Launch(const std::string &exec, const std::vector<s
 	bp::win32_context ctx;
 
 	ctx.environment = bp::self::get_environment();
-    ctx.stdout_behavior = bp::capture_stream();
-    ctx.stderr_behavior = bp::capture_stream();
-    
+	ctx.stdout_behavior = bp::capture_stream();
+	ctx.stderr_behavior = bp::capture_stream();
+
 	// have to capture stdin as well otherwise the xcopy
 	// used in the batch file doesn't work correctly
 	ctx.stdin_behavior = bp::capture_stream();
 
 	// windows specific launch arguments
 	STARTUPINFOA si;
-    ::ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
+	::ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
 	si.dwFlags = STARTF_USESHOWWINDOW;
 	si.wShowWindow = SW_HIDE;
 	ctx.startupinfo = &si;
