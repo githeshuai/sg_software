@@ -184,6 +184,11 @@ You can report issues with the plugin [here](https://github.com/shotgunsoftware/
 
 ## Changelog
 
+**v0.0.5 - 2014 May 19**
+
++ fixed: The plug-in no longer hangs when launching various Applications using Toolkit.  This problem was previously affecting 3ds Max & Hiero under certain conditions as well as custom wrapper scripts that output large amounts of debug during execution
++ fixed: Files containing non-ascii characters are now supported correctly when using local file linking.  Previously these could cause instability when linked/opened.
+
 **v0.0.4 - 2013 July 30**
 
 + fixed: Revert to CreateProcess to avoid security messages when running Tank off of a mount not tagged as intranet
