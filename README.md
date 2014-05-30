@@ -117,9 +117,9 @@ as an alternative.
 
 ### Installing on Linux
 
-A pre-built binary is available [here](https://github.com/shotgunsoftware/browser-plugin/blob/binary/npShotgunIntegration.so?raw=true).
+A pre-built binary is available [here](https://github.com/shotgunsoftware/browser-plugin/blob/binary/npShotgunIntegration.so?raw=true).  For it to run you need to have libgtk2 installed.
 
-This binary was built on CentOS 6.3 and has fairly minimal library dependencies.  There is a good chance it will
+This binary was built on CentOS 6.3 and has fairly minimal library dependencies (libgtk2).  There is a good chance it will
 work on any Linux system based on a 2.6 kernel.  To install it copy the binary to */usr/lib64/mozilla/plugins* or
 *~/.mozilla/plugins*.
 
