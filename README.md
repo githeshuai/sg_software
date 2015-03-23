@@ -125,6 +125,8 @@ work on any Linux system based on a 2.6 kernel.  To install it copy the binary t
 
 Your install location may differ depending on your linux flavor and system architecture.
 
+Note that on CentOS 7, SELinux is configured to be more restrictive by default and blocks the plugin's access to the files system.  If you are running Gnome 3, you should see a notification about this when trying to use the plugin.  You will need to add an exception for the plugin to run correctly.
+
 ### Verifying Installation
 
 Once the plugin is installed and you have restarted your browser, you should see the plugin listed in the browser
