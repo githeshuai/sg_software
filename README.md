@@ -5,7 +5,7 @@ It implements the [local file integration](https://support.shotgunsoftware.com/e
 [pipeline integration](https://tank.shotgunsoftware.com/entries/22126502) features
 of Shotgun.
 
-The plugin is currently in public beta.
+Note that the plugin is being replaced by functionality provided by Shotgun's Desktop application.  The newer implementation works for browsers that have removed support for NPAPI plugins like Chrome.  For more details [click here](https://support.shotgunsoftware.com/entries/95402178).
 
 ## Table of Contents
 
