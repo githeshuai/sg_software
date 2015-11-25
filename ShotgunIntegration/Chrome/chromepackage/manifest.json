@@ -1,9 +1,0 @@
-{
-  "name": "Shotgun Integration",
-  "version": "${FBSTRING_PLUGIN_VERSION}",
-  "description": "Shotgun Integration",
-
-	"plugins": [
-    { "path": "npShotgunIntegration.dll", "public": true }
-  ]
-}
