@@ -1,0 +1,416 @@
+{
+	"configs" : [
+		{
+			"server" : "anta.hxg.cc:443",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "anta",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "antb.hxg.cc:443",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "antb",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "antc.hxg.cc:443",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "antc",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "antd.hxg.cc:443",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "antd",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "cn4t.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "cn4t",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "cn1t.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "cn1t",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "cn3t.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "cn3t",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "cn2t.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "cn2t",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-222.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-222",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-172.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-172",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-66.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-66",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-209.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-209",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-965.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-965",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-252.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-252",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-197.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-197",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-145.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-145",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-207.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-207",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "hk-52.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "hk-52",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "sg-189.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "sg-189",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "sg-150.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "sg-150",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "sg-16.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "sg-16",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "sg-54.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "sg-54",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "sg-187.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "sg-187",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-739.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-739",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-177.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-177",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-162.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-162",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-109.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-109",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-59.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-59",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-210.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-210",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "jp-107.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "jp-107",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "kr-180.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "kr-180",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "kr-215.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "kr-215",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "tw-22.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "tw-22",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "tw-216.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "tw-216",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-7137.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-7137",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-176.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-176",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-4126.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-4126",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-63.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-63",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-40.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-40",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		},
+		{
+			"server" : "us-522.hxg.cc",
+			"server_port" : 54592,
+			"password" : "Ou48uF0g3y",
+			"method" : "rc4-md5",
+			"remarks" : "us-522",
+			"udp_over_udp" : true,
+			"obfs_tcp" : false,
+			"obfs_udp" : false
+		}
+	],
+	"index" : 37,
+	"random" : false,
+	"global" : false,
+	"enabled" : true,
+	"shareOverLan" : false,
+	"isDefault" : false,
+	"localPort" : 1080,
+	"pacUrl" : null,
+	"useOnlinePac" : false,
+	"reconnectTimes" : 0,
+	"randomAlgorithm" : 0,
+	"TTL" : 0
+}
